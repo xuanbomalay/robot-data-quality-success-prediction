@@ -1,7 +1,8 @@
 # Local verification record — 2026-10-18
 
-- Existing project environment: 14 research-control tests passed, including safe pilot resumption, rejecting formal policies trained beyond the frozen budget, and rejecting an ordinary directory at a disconnected Drive mountpoint.
-- Independent environment under `.cache/verification-env` on D: 14 tests passed; Python and notebook artifact checks passed.
+- Existing project environment: 15 research-control tests passed, including safe pilot resumption, rejecting formal policies trained beyond the frozen budget, and rejecting an ordinary directory at a disconnected Drive mountpoint.
+- Independent environment under `.cache/verification-env` on D: 15 tests passed; Python and notebook artifact checks passed.
+- A synthetic negative-control test changes injection-answer identities while holding corrupted actions fixed. Audit selections remain identical, while the oracle selections change; the action detector does not use the separate answer identities.
 - Independent real-data sample check: regenerated 156 features for two held-out demonstrations (one per outcome) and reproduced predictions from all three saved models, with feature tolerance 1e-12 and prediction tolerance 1e-10.
 - Streamlit AppTest: zero exceptions with actual D-drive data, rendering 15,000 audited episodes, 1,495 review candidates, selected-model AUC 0.592 and 30 checked video episodes. A second run hid processed Parquet files to simulate a reports-only checkout and verified clear pending states without exceptions. Windows testing required the local loopback socket used by Python's event loop; all project files and temporary storage remained on D:.
 - Video sample: 30 decoded, zero frame-count mismatches, zero decode errors; left external camera only.

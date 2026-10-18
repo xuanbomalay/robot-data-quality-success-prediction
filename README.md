@@ -2,7 +2,7 @@
 
 A reproducible portfolio project for AI data and algorithm engineering: audit real robot demonstrations, predict eventual demonstration success from early motion, and test cleaning in a separate simulated policy experiment.
 
-**Status:** real-data audit and prediction complete: **15,000 demonstrations**, **30 sampled videos**, and 14 research-control tests passed in an independent D-drive environment. The five policy datasets have been prepared and checked; the formal policy comparison is running, and no policy improvement is claimed.
+**Status:** real-data audit and prediction complete: **15,000 demonstrations**, **30 sampled videos**, and 15 research-control tests passed in an independent D-drive environment. The five policy datasets have been prepared and checked; the formal policy comparison is running, and no policy improvement is claimed.
 
 | Model | Held-out ROC-AUC | Failure PR-AUC | Failure recall |
 |---|---:|---:|---:|

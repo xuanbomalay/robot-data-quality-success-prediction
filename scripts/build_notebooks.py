@@ -104,6 +104,7 @@ import torch, robosuite, mujoco, yaml, importlib
 import robot_audit.policy as policy_module
 importlib.reload(policy_module)
 print({{'python':sys.version,'torch':torch.__version__,'robosuite':robosuite.__version__,'mujoco':mujoco.__version__,'gpu':torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}})
+assert torch.__version__ == '2.11.0+cpu' and not torch.cuda.is_available(), 'This benchmark was frozen on PyTorch 2.11.0+cpu. Use the documented CPU runtime; do not mix backends or PyTorch versions when resuming its checkpoints.'
 '''
 mount='''from google.colab import drive
 if not Path('/content/drive').is_mount():
@@ -142,7 +143,7 @@ nb.cells=[nbf.v4.new_markdown_cell(f'''# Robot data quality: controlled Lift pol
 
 首次安装如果更换了已载入的 NumPy，安装单元会明确要求“重启会话，然后全部运行”。依赖保留在当前云端虚拟机中，重启后顺序运行即可；不要在混合 ABI 的旧内核里继续执行。
 
-训练与安装仅在 Colab；断点保存到本账号云端硬盘项目目录。免费 CPU 不可用时停止并保留状态，不购买算力。改用 GPU 时应另建实验目录并重新运行，避免在同一次对照中混合计算后端。
+训练与安装仅在 Colab；断点保存到本账号云端硬盘项目目录。免费 CPU 不可用时停止并保留状态，不购买算力。此基准固定为 PyTorch 2.11.0+cpu；恢复入口会核对版本与计算后端。
 
 源码包由 `scripts/build_notebooks.py` 从仓库中的可读模块生成，SHA256 为 `{digest}`。Base64 仅用于在 GitHub 发布前让笔记本自包含，不包含数据、密钥或个人文件。'''),nbf.v4.new_code_cell(bootstrap),nbf.v4.new_code_cell(mount),nbf.v4.new_code_cell("policy_main(ws, config, 'prepare')\npolicy_main(ws, config, 'pilot')"),nbf.v4.new_code_cell("policy_main(ws, config, 'run')"),nbf.v4.new_code_cell("policy_main(ws, config, 'summarize')\nprint('COLAB SEQUENTIAL RUN ACCEPTANCE PASS')\nprint(ws.path('reports/policy_results.json').read_text())")]
 nb.cells[3].source="policy_main(ws, config, 'prepare')\npolicy_main(ws, config, 'smoke')\npolicy_main(ws, config, 'pilot')"

@@ -120,6 +120,22 @@ def test_policy_filter_has_equal_retention_and_preserves_inputs():
     assert all(np.isfinite(v).all() for v in conditions['contaminated'].values())
 
 
+def test_audit_selection_does_not_read_injection_answer_identities(monkeypatch):
+    from robot_audit import policy
+
+    rng = np.random.default_rng(9)
+    actions = {f'demo_{i}': rng.uniform(-.5, .5, (80, 7)).astype(np.float32) for i in range(100)}
+    conditions, truth, original = policy.select_policy_conditions(actions)
+    original_ids = {row['episode'] for row in truth}
+    false_ids = [key for key in sorted(actions) if key not in original_ids][:len(truth)]
+    false_answers = [{**row, 'episode': key} for row, key in zip(truth, false_ids)]
+    # Hold detector inputs fixed while replacing the separate oracle answers.
+    monkeypatch.setattr(policy, 'contaminate', lambda *args, **kwargs: (conditions['contaminated'], false_answers))
+    _, _, changed = policy.select_policy_conditions(actions)
+    assert changed['dropped']['audit_drop'] == original['dropped']['audit_drop']
+    assert changed['dropped']['oracle_drop'] != original['dropped']['oracle_drop']
+
+
 def test_threshold_uses_only_supplied_validation_values():
     y = np.array([1, 1, 0, 0])
     t = choose_failure_threshold(y, np.array([.1, .2, .7, .8]))
