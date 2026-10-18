@@ -60,6 +60,7 @@ main.cells.append(nbf.v4.new_code_cell('''policy_path=ROOT/'reports/policy_resul
 if policy_path.exists():
     policy=json.loads(policy_path.read_text(encoding='utf-8'))
     assert policy['status']=='complete' and policy['rollouts']==1500
+    subprocess.run([sys.executable,'-B',str(ROOT/'scripts/verify_policy_results.py')],check=True,cwd=ROOT)
     display(pd.DataFrame(policy['conditions']).T)
     display(Image(filename=str(ROOT/'reports/figures/policy.png')))
     print('POLICY RESULT INSPECTION PASS')

@@ -2,7 +2,7 @@
 
 A reproducible portfolio project for AI data and algorithm engineering: audit real robot demonstrations, predict eventual demonstration success from early motion, and test cleaning in a separate simulated policy experiment.
 
-**Status:** real-data audit and prediction complete: **15,000 demonstrations**, **30 sampled videos**, and 15 research-control tests passed in an independent D-drive environment. The five policy datasets have been prepared and checked; the formal policy comparison is running, and no policy improvement is claimed.
+**Status:** real-data audit, prediction and the controlled policy experiment are complete: **15,000 demonstrations**, **30 sampled videos**, and **1,500 simulated policy rollouts**. Fifteen research-control tests passed in an independent D-drive environment. Final presentation, clean-session Colab verification and GitHub publication are pending.
 
 | Model | Held-out ROC-AUC | Failure PR-AUC | Failure recall |
 |---|---:|---:|---:|
@@ -12,9 +12,27 @@ A reproducible portfolio project for AI data and algorithm engineering: audit re
 
 The validation-selected model is **lightgbm**. Its validation ranking did not carry over to held-out collectors; the simpler logistic regression achieved the higher test AUC. The original resume AUC of 0.85 is not supported by this experiment.
 
-![Local evidence dashboard](reports/figures/demo_overview.jpg)
+![Measured held-out prediction curves](reports/figures/prediction.png)
 
 An independent environment regenerated 156 prefix features and all three model predictions for one real held-out success and one failure episode. See [`reports/real_sample_verification.json`](reports/real_sample_verification.json). Full methods and uncertainty are in the research report.
+
+## Controlled policy results
+
+Simulated robomimic Lift, 10% of training demonstrations with injected action corruption, three prespecified training seeds, 60,000 updates per policy, and 100 shared initial states per seed:
+
+| Training data | Successes / rollouts | Success rate | 95% interval |
+|---|---:|---:|---:|
+| Clean | 184 / 300 | 61.3% | 50.0–73.0% |
+| Contaminated | 68 / 300 | 22.7% | 15.0–31.7% |
+| Randomly drop 10% | 45 / 300 | 15.0% | 8.0–23.3% |
+| Audit-filtered, drop 10% | 173 / 300 | 57.7% | 48.3–67.0% |
+| Oracle-filtered, drop 10% | 187 / 300 | 62.3% | 55.0–69.7% |
+
+Audit filtering improved success over contaminated data by **35.0 percentage points** (95% interval **21.0–48.7**), and over random filtering by **42.7 percentage points**. Intervals use 2,000 paired two-way cluster bootstrap resamples over training seeds and shared initial states. The detector recovered 10 of 18 injected corruptions; random filtering recovered 1 of 18. The oracle uses injection answers only as a reference condition. This is one simulated task and one fixed corruption draw, with only three training seeds; it does not demonstrate an improvement on real DROID or a physical robot.
+
+![Controlled policy comparison](reports/figures/policy.png)
+
+The 1,500-row CSV was compared against all 15 original per-policy cloud logs. Counts, state hashes, training budgets, source hashes, means and intervals can be checked locally with `python -B scripts/verify_policy_results.py`; this requires neither a simulator nor raw demonstration data. See [`policy_results.json`](reports/policy_results.json), [`policy_rollouts.csv`](reports/policy_rollouts.csv) and [`policy_cloud_verification.json`](reports/policy_cloud_verification.json).
 
 ## Why this project
 
@@ -78,7 +96,9 @@ For a clean Linux/CI/cloud workspace, install `requirements.txt`, set `PYTHONPAT
 - `reports/research_report.md`: question, methods, measured results and limitations.
 - `reports/prediction_metrics.json`: model selection, validation/test metrics and uncertainty.
 - `reports/audit_summary.json`, `reports/video_summary.json`: actual coverage.
-- `reports/policy_results.json`: created only after all formal rollouts pass acceptance.
+- `reports/policy_results.json`, `reports/policy_rollouts.csv`: complete formal results and all 1,500 rollout records.
+- `reports/policy_protocol.json`, `reports/policy_injection_truth.json`: frozen budget and traceable fault injection records, kept separate from the detector.
+- `reports/cloud_source_manifest.json`, `reports/cloud_requirements.txt`: actual CPU training environment and source provenance, including the resumed run.
 - `reports/resume_evidence.md`: fact-bounded English bullets and Chinese interview explanation.
 
 The local Streamlit app has four views: overview, quality review, trajectories, and success prediction. Missing outputs display a pending state rather than invented demo scores. No hosting subscription is required.

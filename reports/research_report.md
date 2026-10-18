@@ -47,9 +47,22 @@ These are validation-set permutation results for the selected model, with three 
 The false alert has the highest predicted failure probability among successful demonstrations; the missed failure has the lowest among failed demonstrations. These examples were chosen for inspection after the model and threshold were fixed. No task-failure cause is inferred from early motion alone, and the examples are not used for retraining or threshold selection.
 
 ## Controlled policy experiment
-Status: **pending — no policy improvement claim**.
+Status: **complete**.
 
-The policy comparison has not completed. No downstream improvement is claimed.
+- clean: 61.3% success (95% CI 50.0%–73.0%).
+- contaminated: 22.7% success (95% CI 15.0%–31.7%).
+- random_drop: 15.0% success (95% CI 8.0%–23.3%).
+- audit_drop: 57.7% success (95% CI 48.3%–67.0%).
+- oracle_drop: 62.3% success (95% CI 55.0%–69.7%).
+Audit-filtered minus contaminated: 35.00 percentage points; CI [21.000000000000004, 48.66666666666667]. Simulation and injected corruptions only.
+
+All 15 policies used 60,000 optimization steps and the same 100 initial-state seeds (10,000–10,099). The independent clean pilot used training seed 5 and separate starts (9,000–9,019), achieving 14/20 before the formal budget was frozen. Formal training seeds were 17, 29 and 43; the final fixed-step checkpoints were evaluated without test-based checkpoint selection.
+
+The training masks contained 180 demonstrations; validation masks contained 20. Exactly 18 training demonstrations were corrupted (nine with action spikes and nine with action misalignment). Each filtering condition removed 18 demonstrations. Audit filtering recovered 10/18 injected cases, while random removal recovered 1/18. Random removal also reduced success below the contaminated baseline in this experiment, so sample removal alone did not provide the observed audit benefit. Audit filtering remained below the clean mean; the experiment does not establish complete recovery or unseen-task generalization.
+
+Each of the 1,500 published CSV rows was checked against its original per-policy cloud record. An independent NumPy implementation recomputes all means and bootstrap intervals with `scripts/verify_policy_results.py`. Source, environment, protocol and injection hashes are retained in the adjacent JSON reports. No checkpoints or raw training data are redistributed.
+
+![Controlled simulation comparison](figures/policy.png)
 
 ## Limits and interpretation
 - Labels describe human teleoperated demonstrations, not autonomous policy execution.

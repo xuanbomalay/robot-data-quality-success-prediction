@@ -1,0 +1,26 @@
+{
+  "bundle_sha256": "31f876b9b0bbab01fca47eb93fc79c6d2d4b18adda616f4432f73c4fa55ec998",
+  "source_sha256": {
+    "src/robot_audit/paths.py": "f69264127f8e16d4a1e61887916758b85fa8187500e2b1fcf18c09f7f6dff086",
+    "src/robot_audit/__init__.py": "d88bfd8e98a726d88c44ed361d219b672cd8c309521b5fc128696d7b23da7c97",
+    "src/robot_audit/download.py": "c5b7fb3583b7fefa1d2d9a6a6b06413c86c93b12268eea6b9294ba542863d605",
+    "src/robot_audit/policy.py": "ac47753ec91a9afa20d1df20e62a3772272d565164dacb59396e153283401d4c"
+  },
+  "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+  "torch": "2.11.0+cpu",
+  "device": "cpu",
+  "previous_sources": [
+    {
+      "bundle_sha256": "186e11c2824e1f9066bb09c704a82a46387d7a408bd12bdaeb47db9e94c86154",
+      "source_sha256": {
+        "src/robot_audit/paths.py": "45b1160483df3b2699e97c1631493143ce9960ae77eed4f5b587448ff1e068b6",
+        "src/robot_audit/__init__.py": "d88bfd8e98a726d88c44ed361d219b672cd8c309521b5fc128696d7b23da7c97",
+        "src/robot_audit/download.py": "c5b7fb3583b7fefa1d2d9a6a6b06413c86c93b12268eea6b9294ba542863d605",
+        "src/robot_audit/policy.py": "ac47753ec91a9afa20d1df20e62a3772272d565164dacb59396e153283401d4c"
+      },
+      "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+      "torch": "2.11.0+cpu",
+      "device": "cpu"
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
   "status": "PASS",
   "mode": "inspect_saved_results",
-  "source_sha256": "162002dc635efbad5d7d8f318f6a1851f3354e9cb3483f1e3c8c5a52e36bbe92",
+  "source_sha256": "e7f644f7c4dfed142710e93c18b6c1bbafc8d473162bcecc201bde0481a3e098",
   "code_cells_executed": 5,
-  "embedded_figures": 2,
+  "embedded_figures": 3,
   "scope": "saved measured reports and figures; no data download, model retraining or simulation rerun",
   "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
-  "outputs_saved": false
+  "outputs_saved": true
 }

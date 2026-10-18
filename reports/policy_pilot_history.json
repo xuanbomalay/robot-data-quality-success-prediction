@@ -1,0 +1,8 @@
+[
+  {
+    "steps": 60000,
+    "success_rate": 0.7,
+    "episodes": 20,
+    "passed": true
+  }
+]

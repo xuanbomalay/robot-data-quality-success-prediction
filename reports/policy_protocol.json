@@ -1,0 +1,28 @@
+{
+  "repo": "robomimic/robomimic_datasets",
+  "revision": "74fa018461f479cd9fd15b924a16103012096203",
+  "file": "v1.5/lift/ph/low_dim_v15.hdf5",
+  "corruption_fraction": 0.1,
+  "train_seeds": [
+    17,
+    29,
+    43
+  ],
+  "eval_seeds_start": 10000,
+  "eval_episodes": 100,
+  "pilot_seeds_start": 9000,
+  "pilot_episodes": 20,
+  "steps": 60000,
+  "batch_size": 128,
+  "horizon": 400,
+  "pilot_passed": true,
+  "architecture": "MLP 256-256, Adam .001, batch 128, MSE",
+  "selection": "final fixed-step checkpoint",
+  "condition_order": [
+    "clean",
+    "contaminated",
+    "random_drop",
+    "audit_drop",
+    "oracle_drop"
+  ]
+}

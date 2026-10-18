@@ -1,0 +1,9 @@
+{
+  "steps": 60000,
+  "success_rate": 0.7,
+  "episodes": 20,
+  "required_success_rate": 0.7,
+  "passed": true,
+  "pilot_seed": 5,
+  "eval_seed_start": 9000
+}
