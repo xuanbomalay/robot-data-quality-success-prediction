@@ -43,6 +43,26 @@ def create_reports(ws, config):
     axes[1].set_title('Review flags (overlapping; not corruption labels)'); axes[1].tick_params(axis='x', labelsize=8)
     fig.tight_layout(); fig.savefig(figure_dir/'audit.png'); plt.close(fig)
     model = prediction['selected_model']; m = prediction['models'][model]['test']; ci = prediction['models'][model]['test_ci95']
+    selected_predictions = predictions[predictions.model.eq(model)].copy()
+    selected_predictions['probability_failure'] = 1 - selected_predictions.probability_success
+    alert = selected_predictions.probability_failure >= selected_predictions.failure_threshold
+    error_rows = []
+    for label, mask, ascending in [
+            ('False alert', selected_predictions.success.eq(1) & alert, False),
+            ('Missed failure', selected_predictions.success.eq(0) & ~alert, True)]:
+        candidates = selected_predictions[mask].sort_values(['probability_failure', 'episode_id'],
+                                                           ascending=[ascending, True])
+        if not candidates.empty:
+            row = candidates.iloc[0]
+            error_rows.append(f'| {label} | `{row.episode_id}` | {row.probability_failure:.1%} | {row.failure_threshold:.1%} |')
+    errors_md = '| Case | Project episode ID | Predicted failure | Fixed alert threshold |\n|---|---|---:|---:|\n' + '\n'.join(error_rows)
+    importance_path = ws.path('reports/feature_importance.csv')
+    importance_md = 'Validation permutation importance is unavailable.'
+    if importance_path.exists():
+        importance = pd.read_csv(importance_path).head(5)
+        importance_md = '| Prefix feature | Validation AUC drop after permutation | Repeat SD |\n|---|---:|---:|\n'
+        importance_md += '\n'.join(f'| `{row.feature}` | {row.validation_permutation_auc_drop:.4f} | {row.std:.4f} |'
+                                   for row in importance.itertuples(index=False))
     policy_status = 'complete' if policy and policy.get('status') == 'complete' else 'pending — no policy improvement claim'
     rows_md = '\n'.join(f'| {name} | {r["test"]["roc_auc_success"]:.3f} | {r["test"]["pr_auc_failure"]:.3f} | {r["test"]["failure_recall"]:.3f} |' for name,r in prediction['models'].items())
     policy_text = 'The policy comparison has not completed. No downstream improvement is claimed.'
@@ -95,6 +115,15 @@ Validation-selected model: **{model}**. Test AUC 95% collector-bootstrap CI: {ci
 
 ![Held-out evaluation](figures/prediction.png)
 
+## Feature interpretation and error inspection
+{importance_md}
+
+These are validation-set permutation results for the selected model, with three repeats. Feature indices are zero-based; `min`, `std` and `mean_abs_delta` summarize only the fixed 30-frame prefix. Small AUC drops describe model dependence on correlated motion signals, not causal effects or explanations for task failure.
+
+{errors_md}
+
+The false alert has the highest predicted failure probability among successful demonstrations; the missed failure has the lowest among failed demonstrations. These examples were chosen for inspection after the model and threshold were fixed. No task-failure cause is inferred from early motion alone, and the examples are not used for retraining or threshold selection.
+
 ## Controlled policy experiment
 Status: **{policy_status}**.
 
@@ -104,19 +133,28 @@ Status: **{policy_status}**.
 - Labels describe human teleoperated demonstrations, not autonomous policy execution.
 - The community conversion already removed some inconsistent episodes; findings do not estimate all raw DROID defects.
 - Collector grouping tests transfer across collectors, not verified unseen scenes or unseen tasks.
+- Success and failure cohorts come from separate converted repositories. Removing explicit source fields does not eliminate possible task, collection or conversion differences between cohorts; these may contribute to discrimination.
 - Motion anomaly and task failure are separate concepts. Isolation Forest scores do not establish corruption or causation.
 - A small, budget-limited video sample cannot establish whole-dataset camera quality.
 - Controlled simulation results do not establish that filtering real DROID improves a physical robot.
+- Policy uncertainty is limited by three training seeds, one Lift task and one fixed corruption draw. Bootstrap intervals do not establish generalization across tasks or corruption mixtures.
 
 ## Reproducibility
 Pinned data commits: `source_versions.json`; downloaded file SHA256 values recorded. Project seed 42. Windows dependency versions: `requirements-lock-windows.txt`. Policy checkpoints include optimizer/RNG state. Formal policy comparisons require all 1,500 rollouts and identical initial-state hashes. CI uses synthetic fixtures clearly separated from real-data metrics.
 '''
     ws.path('reports/research_report.md').write_text(report, encoding='utf-8')
+    resume_second = f'- Engineered fixed-prefix motion features and benchmarked logistic regression and LightGBM against a prior baseline under collector-held-out validation; the validation-selected {model} achieved a test ROC-AUC of {m["roc_auc_success"]:.3f} (95% grouped-bootstrap CI {ci["roc_auc_success"][0]:.3f}–{ci["roc_auc_success"][1]:.3f}).'
+    policy_brief = '最后用一个独立的 Lift 仿真实验检验数据清洗是否改善策略。真实数据的质量审计与人工污染的仿真实验分别解释，只有五组对照全部完成之后才报告策略效果。'
+    if policy and policy.get('status') == 'complete':
+        difference = policy['audit_minus_contaminated_percentage_points']
+        interval = policy['audit_minus_contaminated_ci95_pp']
+        resume_second = f'- Designed a controlled Lift behavior-cloning benchmark with five data conditions, three training seeds and 1,500 matched rollouts; measured an audit-filtered versus contaminated success-rate difference of {difference:+.1f} percentage points (95% paired cluster-bootstrap CI {interval[0]:+.1f} to {interval[1]:+.1f}), scoped to simulated action corruption.'
+        policy_brief = f'最后我完成了独立的 Lift 仿真实验：五组数据、三个训练随机种子，每个策略使用相同的 100 个初始状态，共 1,500 次评测。审计剔除组相对污染组的成功率差为 {difference:+.1f} 个百分点，95% 区间为 {interval[0]:+.1f} 到 {interval[1]:+.1f}。区间同时考虑训练种子和共享初始状态的不确定性。它检验的是人工动作污染下的仿真表现，不能解释成真实 DROID 机器人提升。'
     resume = f'''# Resume evidence and interview brief
 
 ## Verified English resume bullets
-- Built a reproducible audit pipeline for {audit['audited_episodes']:,} DROID robot demonstrations in LeRobot v3 format, checking trajectory structure, converted timestamps, action anomalies and sampled video alignment; maintained pinned data versions and file hashes.
-- Engineered fixed-prefix motion features and benchmarked logistic regression and LightGBM against a prior baseline under collector-held-out validation; the validation-selected {model} achieved a test ROC-AUC of {m['roc_auc_success']:.3f} (95% grouped-bootstrap CI {ci['roc_auc_success'][0]:.3f}–{ci['roc_auc_success'][1]:.3f}).
+- Built a resumable audit and early-success prediction pipeline for {audit['audited_episodes']:,} DROID demonstrations using {audit['feature_count']} motion features from the first {config['prefix_frames']} frames, rule checks and Isolation Forest; maintained pinned data versions, file hashes and collector-held-out logistic regression/LightGBM evaluation.
+{resume_second}
 
 Do not use the old AUC 0.85 or 16% improvement unless this repository's measured results support them. Policy status: {policy_status}.
 
@@ -127,7 +165,7 @@ Do not use the old AUC 0.85 or 16% improvement unless this repository's measured
 
 建模时我发现了一个很容易导致虚高成绩的问题：失败轨迹的任务文本都是空的，所以文本、来源、完整长度和终局信息全部排除。模型只看前 30 帧运动特征，并按采集者划分训练和测试，而不是随机拆分帧。实际测试 AUC 是 {m['roc_auc_success']:.3f}，不确定性区间也一起报告。
 
-最后用一个独立的 Lift 仿真实验检验数据清洗是否改善策略。真实数据的质量审计与人工污染的仿真实验分别解释，只有五组对照全部完成之后才报告策略效果。
+{policy_brief}
 
 这个项目中我负责的是数据管线、质量规则、特征设计、防泄漏评估和工程复现。它的价值是给出可检查的证据，而不是用一个漂亮的准确率代替完整实验。
 '''

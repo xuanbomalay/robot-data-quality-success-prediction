@@ -28,6 +28,24 @@ Validation-selected model: **lightgbm**. Test AUC 95% collector-bootstrap CI: [0
 
 ![Held-out evaluation](figures/prediction.png)
 
+## Feature interpretation and error inspection
+| Prefix feature | Validation AUC drop after permutation | Repeat SD |
+|---|---:|---:|
+| `observation_joint_velocity_3_min` | 0.0108 | 0.0050 |
+| `observation_joint_velocity_1_min` | 0.0096 | 0.0029 |
+| `observation_cartesian_position_1_std` | 0.0065 | 0.0022 |
+| `observation_joint_velocity_6_min` | 0.0065 | 0.0030 |
+| `action_joint_velocity_1_mean_abs_delta` | 0.0060 | 0.0004 |
+
+These are validation-set permutation results for the selected model, with three repeats. Feature indices are zero-based; `min`, `std` and `mean_abs_delta` summarize only the fixed 30-frame prefix. Small AUC drops describe model dependence on correlated motion signals, not causal effects or explanations for task failure.
+
+| Case | Project episode ID | Predicted failure | Fixed alert threshold |
+|---|---|---:|---:|
+| False alert | `f24b95d3a390a7c43019` | 61.2% | 19.0% |
+| Missed failure | `61f895a647e3bc8095e8` | 5.5% | 19.0% |
+
+The false alert has the highest predicted failure probability among successful demonstrations; the missed failure has the lowest among failed demonstrations. These examples were chosen for inspection after the model and threshold were fixed. No task-failure cause is inferred from early motion alone, and the examples are not used for retraining or threshold selection.
+
 ## Controlled policy experiment
 Status: **pending — no policy improvement claim**.
 
@@ -37,9 +55,11 @@ The policy comparison has not completed. No downstream improvement is claimed.
 - Labels describe human teleoperated demonstrations, not autonomous policy execution.
 - The community conversion already removed some inconsistent episodes; findings do not estimate all raw DROID defects.
 - Collector grouping tests transfer across collectors, not verified unseen scenes or unseen tasks.
+- Success and failure cohorts come from separate converted repositories. Removing explicit source fields does not eliminate possible task, collection or conversion differences between cohorts; these may contribute to discrimination.
 - Motion anomaly and task failure are separate concepts. Isolation Forest scores do not establish corruption or causation.
 - A small, budget-limited video sample cannot establish whole-dataset camera quality.
 - Controlled simulation results do not establish that filtering real DROID improves a physical robot.
+- Policy uncertainty is limited by three training seeds, one Lift task and one fixed corruption draw. Bootstrap intervals do not establish generalization across tasks or corruption mixtures.
 
 ## Reproducibility
 Pinned data commits: `source_versions.json`; downloaded file SHA256 values recorded. Project seed 42. Windows dependency versions: `requirements-lock-windows.txt`. Policy checkpoints include optimizer/RNG state. Formal policy comparisons require all 1,500 rollouts and identical initial-state hashes. CI uses synthetic fixtures clearly separated from real-data metrics.

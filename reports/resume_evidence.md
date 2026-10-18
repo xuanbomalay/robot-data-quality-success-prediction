@@ -1,7 +1,7 @@
 # Resume evidence and interview brief
 
 ## Verified English resume bullets
-- Built a reproducible audit pipeline for 15,000 DROID robot demonstrations in LeRobot v3 format, checking trajectory structure, converted timestamps, action anomalies and sampled video alignment; maintained pinned data versions and file hashes.
+- Built a resumable audit and early-success prediction pipeline for 15,000 DROID demonstrations using 156 motion features from the first 30 frames, rule checks and Isolation Forest; maintained pinned data versions, file hashes and collector-held-out logistic regression/LightGBM evaluation.
 - Engineered fixed-prefix motion features and benchmarked logistic regression and LightGBM against a prior baseline under collector-held-out validation; the validation-selected lightgbm achieved a test ROC-AUC of 0.592 (95% grouped-bootstrap CI 0.473–0.664).
 
 Do not use the old AUC 0.85 or 16% improvement unless this repository's measured results support them. Policy status: pending — no policy improvement claim.

@@ -36,7 +36,7 @@ flowchart LR
 ## Data and attribution
 
 - Real data: [DROID](https://droid-dataset.github.io/), using the community [LeRobot success conversion](https://huggingface.co/datasets/jnogga/droid_success) and [failure conversion](https://huggingface.co/datasets/jnogga/droid_failure), CC BY 4.0. Credit to the DROID authors and conversion maintainer. These converted datasets already exclude some inconsistent raw episodes.
-- Simulation data: [robomimic datasets](https://huggingface.co/datasets/robomimic/robomimic_datasets), MIT; environment [robosuite](https://github.com/ARISE-Initiative/robosuite), powered by MuJoCo. This project implements its own small PyTorch BC network using the released environment metadata.
+- Simulation data: [robomimic datasets](https://huggingface.co/datasets/robomimic/robomimic_datasets), [MIT dataset card](https://huggingface.co/datasets/robomimic/robomimic_datasets/blob/74fa018461f479cd9fd15b924a16103012096203/README.md); environment [robosuite](https://github.com/ARISE-Initiative/robosuite), powered by MuJoCo. This project implements its own small PyTorch BC network using the released environment metadata.
 - Data commits are pinned in `configs/project.yaml`; downloaded file SHA256 values are recorded. Raw data is not redistributed in this repository. Source licenses govern source data; the MIT license here covers project code.
 
 ## Run on Windows, with project writes on D:
@@ -85,7 +85,7 @@ The local Streamlit app has four views: overview, quality review, trajectories, 
 
 ## Important boundaries
 
-Labels describe human demonstrations, not autonomous robot reliability. Collector-held-out testing does not establish unseen-task or unseen-scene generalization. The selected 80/20 outcome prevalence affects precision/calibration. Simulated injected-corruption results cannot establish real DROID policy improvements. CI checks research controls with synthetic fixtures and does not rerun the multi-GB real-data experiment.
+Labels describe human demonstrations, not autonomous robot reliability. Collector-held-out testing does not establish unseen-task or unseen-scene generalization. Success and failure cohorts come from separate converted repositories; residual task, collection or conversion differences may contribute to discrimination even after explicit source fields are excluded. The selected 80/20 outcome prevalence affects precision/calibration. Simulated injected-corruption results cannot establish real DROID policy improvements. CI checks research controls with synthetic fixtures and does not rerun the multi-GB real-data experiment.
 
 ## References
 

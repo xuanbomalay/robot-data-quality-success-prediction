@@ -35,15 +35,15 @@ def read_table(name):
     return pd.read_parquet(ROOT/'data/processed'/f'{name}.parquet')
 
 
-audit = read_json('audit_summary'); prediction = read_json('prediction_metrics')
+audit = read_json('audit_summary'); prediction = read_json('prediction_metrics'); anomaly = read_json('anomaly_summary')
 st.markdown('<div class="eyebrow">ROBOT DATA QUALITY LAB · INDEPENDENT PROJECT</div>', unsafe_allow_html=True)
 st.title('From demonstrations to evidence.')
 st.markdown('<p class="intro">Audit robot trajectories, identify review candidates, and test whether early motion predicts demonstration success.</p>', unsafe_allow_html=True)
-if audit is None or prediction is None:
+if audit is None or prediction is None or anomaly is None:
     st.info('Real-data experiment outputs are not available in this checkout. Follow the README to fetch pinned data and run the pipeline. No sample scores are substituted.')
     st.stop()
 selected = prediction['selected_model']; selected_metrics = prediction['models'][selected]['test']
-anomaly = read_json('anomaly_summary'); video = read_json('video_summary'); policy = read_json('policy_results')
+video = read_json('video_summary'); policy = read_json('policy_results')
 c1,c2,c3,c4 = st.columns(4)
 c1.metric('Demonstrations audited', f'{audit["audited_episodes"]:,}')
 c2.metric('Review candidates', f'{anomaly["review_flags"]:,}')
@@ -68,29 +68,46 @@ with overview:
         st.info('Outcome labels describe human demonstrations. They do not measure autonomous robot reliability. Converted timestamps cannot reveal original sensor-clock drift.')
     st.subheader('Controlled policy experiment')
     if policy and policy.get('status')=='complete':
-        pframe=pd.DataFrame([{'condition':k,'success_rate':v['success_rate']} for k,v in policy['conditions'].items()])
-        st.plotly_chart(px.bar(pframe,x='condition',y='success_rate',color_discrete_sequence=['#137c8b']).update_yaxes(tickformat='.0%',range=[0,1]),width='stretch')
+        pframe=pd.DataFrame([{'condition':k,'success_rate':v['success_rate'],
+                             'upper':v['ci95'][1]-v['success_rate'],
+                             'lower':v['success_rate']-v['ci95'][0]} for k,v in policy['conditions'].items()])
+        pfig=px.bar(pframe,x='condition',y='success_rate',error_y='upper',error_y_minus='lower',
+                    color_discrete_sequence=['#137c8b'])
+        seed_results=pd.DataFrame(policy['per_seed'])
+        pfig.add_scatter(x=seed_results.condition,y=seed_results.success,mode='markers',
+                         marker=dict(color='#da6b46',size=7),name='Training seeds')
+        pfig.update_yaxes(tickformat='.0%',range=[0,1])
+        pfig.update_layout(xaxis_title='',yaxis_title='Simulation success rate')
+        st.plotly_chart(pfig,width='stretch')
+        difference=policy['audit_minus_contaminated_percentage_points']
+        interval=policy['audit_minus_contaminated_ci95_pp']
+        st.markdown(f'**Audit minus contaminated:** {difference:+.1f} percentage points '
+                    f'(95% CI {interval[0]:+.1f} to {interval[1]:+.1f}).')
         st.caption(f"Simulated Lift only · {policy['rollouts']} rollouts · injected action corruptions · paired initial states verified")
+        st.caption('Bars: mean over three training seeds; dots: individual seeds; intervals: paired two-way cluster bootstrap over training seeds and shared initial states.')
     else:
         st.info('Policy comparison is still pending. No downstream improvement is claimed.')
 
 with quality:
-    data=read_table('audit')
     st.subheader('Review candidates with traceable reasons')
     st.caption('Isolation Forest is fitted on training trajectories only. A review flag is a request for inspection, not a confirmed defect.')
-    a,b=st.columns([1,3])
-    with a:
-        flagged=st.checkbox('Show review candidates only',True)
-        outcome=st.selectbox('Demonstration outcome',['All','Success','Failure'])
-    view=data[data.review_flag] if flagged else data
-    if outcome!='All': view=view[view.success.eq(int(outcome=='Success'))]
-    columns=['episode_id','actual_frames','success','isolation_score','reasons','split']
-    with b:
-        st.dataframe(view.sort_values('isolation_score',ascending=False)[columns].head(500),hide_index=True,width='stretch')
-    fig=px.histogram(data,x='isolation_score',color=data.success.map({0:'Failure',1:'Success'}),barmode='overlay',nbins=50,
-                     color_discrete_map={'Failure':'#da6b46','Success':'#137c8b'},labels={'color':'Outcome'})
-    fig.update_layout(height=330,xaxis_title='Anomaly score',yaxis_title='Episodes')
-    st.plotly_chart(fig,width='stretch')
+    if not (ROOT/'data/processed/audit.parquet').exists():
+        st.info('Download the pinned data and run the audit to inspect individual candidates. Summary reports remain available in this checkout.')
+    else:
+        data=read_table('audit')
+        a,b=st.columns([1,3])
+        with a:
+            flagged=st.checkbox('Show review candidates only',True)
+            outcome=st.selectbox('Demonstration outcome',['All','Success','Failure'])
+        view=data[data.review_flag] if flagged else data
+        if outcome!='All': view=view[view.success.eq(int(outcome=='Success'))]
+        columns=['episode_id','actual_frames','success','isolation_score','reasons','split']
+        with b:
+            st.dataframe(view.sort_values('isolation_score',ascending=False)[columns].head(500),hide_index=True,width='stretch')
+        fig=px.histogram(data,x='isolation_score',color=data.success.map({0:'Failure',1:'Success'}),barmode='overlay',nbins=50,
+                         color_discrete_map={'Failure':'#da6b46','Success':'#137c8b'},labels={'color':'Outcome'})
+        fig.update_layout(height=330,xaxis_title='Anomaly score',yaxis_title='Episodes')
+        st.plotly_chart(fig,width='stretch')
 
 with trajectories:
     st.subheader('Inspect a trajectory')
