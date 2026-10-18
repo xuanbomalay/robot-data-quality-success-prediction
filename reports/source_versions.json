@@ -1,0 +1,473 @@
+{
+  "sources": {
+    "success": {
+      "repo": "jnogga/droid_success",
+      "revision": "1fac60878954ad6f6e0652b9c11a50660660c220",
+      "label": 1
+    },
+    "failure": {
+      "repo": "jnogga/droid_failure",
+      "revision": "4231e59ca9b9fa89b873cfd41d55924a300383ca",
+      "label": 0
+    }
+  },
+  "control_shards": 91,
+  "control_bytes": 7171466666,
+  "checksums": [
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_000.parquet",
+      "sha256": "6878447349e6e27a0f5c3e0b48ff0a4b07dfcb05d9b37d890ea97b58fdccfbdd"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_001.parquet",
+      "sha256": "ecaa434b73c1edabb08c69f03e4fcf464240c45483f0bbc0f261eed8809410f7"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_002.parquet",
+      "sha256": "9d47ea72867d32b05a2bb4b6ffd53c55459a9b18ea2d59d5634d9053644a9d0a"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_003.parquet",
+      "sha256": "48b0374cd3da06f846345763d9fb07f33aaf3049ff289ab4523cd6cb510b892a"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_004.parquet",
+      "sha256": "9b7052773a281f509665a6e2214415add901ea3370a6a7e87f36871fe15e8019"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_005.parquet",
+      "sha256": "e25754bbb6db48d080772e2d2901de3459c0802e1d3643757bd553fe5e2fbe15"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_006.parquet",
+      "sha256": "65aa9d8f65200f6add652212206dc399d39b196a395cc78d63e7e7936bd6cbc6"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_007.parquet",
+      "sha256": "d225623130b3c77d380ef38cb82acf4759c35d1d6f9c8f0c0802dac1b0238344"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_008.parquet",
+      "sha256": "a52f5bcf09877cbfd0fc7637ac7695562d214b9b9339369aa5f3049c901e07fc"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_009.parquet",
+      "sha256": "701b14eb8334105d6f71116c363d91dc22cb19923a06ec4d2b1b09020dd2cd17"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_010.parquet",
+      "sha256": "f3bf6b89d929cb6e68b5bd0ea7df1e827e11c1b4c90a6b3639698fa76593de08"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_011.parquet",
+      "sha256": "45715d8bff9c2a1470441f70dfb46590803f9e5c5fbd399dc55ab54ffa6752a7"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_012.parquet",
+      "sha256": "0a399e46cd3155805c916d5e29fdab0d701e8e9042200a02fdb65adcad39990e"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_013.parquet",
+      "sha256": "3a8b1b8a1fb28ce62c130d864eed1b8c591c8947bd59bf948348d0fc6ab988e3"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_014.parquet",
+      "sha256": "2fc88520f6f2554b9df1885792b7c7b84099489c785ba4613269b3bf45c23b8e"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_015.parquet",
+      "sha256": "344b753012d4082a821c1c4f0801a042a16acaea8a7fed3209b7e12a96a9d8f3"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_016.parquet",
+      "sha256": "e9287add9f3817ceea4a83d66eeb3e9256ddced9541f4c20311b8c3bd28b69bf"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_017.parquet",
+      "sha256": "7e2cae78e21ff41fec23496b19326acbadaa7dc13d583531a641513aec431793"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_018.parquet",
+      "sha256": "d2707d366e1d5b690419221387586d0c332a7415cb143ab7205405d6fe05a0f4"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_019.parquet",
+      "sha256": "1af4d461e3885159fffebe8384e02c975be9bf7ea287dea761ef81123f2714ff"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_020.parquet",
+      "sha256": "07bc73f9ace4fae5e33ccbf06b51da21b2e24bc0ff1b945e28d54dc746280908"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_021.parquet",
+      "sha256": "b56cd5a16b1d0a2aba851c05c852ad5caf413aa6af6a9cb80f95220c989d22ea"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_022.parquet",
+      "sha256": "2802b3979b7c4786c7e768a7eea991cb0650348730da8da459499799ff20173d"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_023.parquet",
+      "sha256": "e48a1903e0e9a29547d7af4625dfe4b5fcf05b96b3f4342e6b26d6e030779bf3"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_024.parquet",
+      "sha256": "267da453f3d890dd262d7c96544b3e6ee03f76a72d465a94ae52a5c5f7658f97"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_025.parquet",
+      "sha256": "af1ed1367fd214d605b4cd3fa5d9d44db91dd804b5d66191ff7935231b157132"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_026.parquet",
+      "sha256": "df923d026f7c733e8169a6a39693867675a4cc2d4e66be29b1deeb7e45739ae1"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_027.parquet",
+      "sha256": "f2ccc383cc9b6976deb45cd47843a5fdb362b5f8e1687dc42c00008c8b474398"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_028.parquet",
+      "sha256": "584be70613c64e703c5a97d4769c68f534804c0ec77dc43a5443221212b1098f"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_029.parquet",
+      "sha256": "6d944f4af1522599d10796863bf54584290951cc4e39bd0eaa0a93a31629e7b4"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_030.parquet",
+      "sha256": "23a491fc714d033905192ef4ea3bd83d3e2d7cf458909868fa2d42ba8e284cf2"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_031.parquet",
+      "sha256": "413bd98640caa245d044b43f234f958b9861714461aec0ac189a3f6f4a42ff16"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_032.parquet",
+      "sha256": "e7d3ee8f1d752f414d7210d580f31636b6fd4c8c477d62478c0284f1fcbda260"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_033.parquet",
+      "sha256": "24f868a7eb5ce711039de65d9a49065728d6272029d12877be7371117bebe80d"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_034.parquet",
+      "sha256": "206dc256093ff645c401ba8f51389ae3dc29142a6fd9454c8f35b7c0fd170da6"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_035.parquet",
+      "sha256": "7d875078e15aa1c11d45a8acb739033d64d8f858aa9ef59c068dee2c095ee8de"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_036.parquet",
+      "sha256": "65ca362cec7d5369d1785c8dab7d920ab9396a6dc29e3c1b261f0f1dce7838bb"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_037.parquet",
+      "sha256": "b1b199d81951024af0dd937691ed108930aeae479adeba42e903543d9c931bfb"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_038.parquet",
+      "sha256": "01f33d153d114629643886267b1a3048ea71ae9fc2201a58f03bcabf2b0dc2e2"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_039.parquet",
+      "sha256": "a1bd3b209865403be924b84321fd361e17cc2744120d4e96bf1c84b8d66cf1b6"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_040.parquet",
+      "sha256": "4bc9c4fcad4108801f1786b2538c905176f16453aecc7a331a3dca5e1542708a"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_041.parquet",
+      "sha256": "2f36fb31392321cffd2529aa28270d78c043780a52e2029e19bc9962dd4e5b26"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_042.parquet",
+      "sha256": "ef961a6e0c04a751735153d2cc951b0508cb8c04d952de6788beec97d542143e"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_043.parquet",
+      "sha256": "0c54476cffc6e4ca47555ab1be32743fa5f04b43f4d66f5612684a7c0c6c1fd7"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_044.parquet",
+      "sha256": "fd94d4edab4f0dc328d8d91be003cf8cca11a5b4426818ee3476c8cd9196c627"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_045.parquet",
+      "sha256": "9045842fe319e226cee552156a041c9c3a3c15776c4b8c2b9b91cb52170d7772"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_046.parquet",
+      "sha256": "72b623ed1401b200f2e3956f793111256198760caf47890a1760c72e1553ed42"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_047.parquet",
+      "sha256": "64f71e6a1778d772b572000e076bea75cd54c5b6404c6c4068746edea8e66c68"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_048.parquet",
+      "sha256": "b6fb571a6bfe6620970ec8077630a3369980522824837709accf2b2faf303c73"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_049.parquet",
+      "sha256": "27b248f4d49b9ba1f3bacf0d825e86252d2f70a62653ac3ee40a582c75d01cac"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_050.parquet",
+      "sha256": "92c24c1e18850bcfd5823724eca4551388892c9931e8db1e9af0b9a74e0eb4e4"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_051.parquet",
+      "sha256": "99a9d813e54a31849df24bca88751dc9d944cefec380465a1390d54ebe159182"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_052.parquet",
+      "sha256": "fe373dbfc4b777aee360f64cee6e90cbca605b952704f908419753d55a0e204b"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_053.parquet",
+      "sha256": "b025e661a1665af8b0ee583adaf27b7cec36935016093379070f5e5805ff3edd"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_054.parquet",
+      "sha256": "914f619209e69cd5d527078d094d98e05113fa781e6d71424df0d5dca46f1b35"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_055.parquet",
+      "sha256": "01a376e3b4ea2416fb944a8a84ffb337f64aaa6173c8326b3f241f15e7110200"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_056.parquet",
+      "sha256": "34e41af8608894b6e57d1acf0e2850892900a700b99cb592d1a545c56adfa88e"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_057.parquet",
+      "sha256": "573f6442f32b8717747f688eb2762a3f2a907bf69721adb301597f3203d8a4bf"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_058.parquet",
+      "sha256": "88a3e6e4090cf1e17372b1f8a084eb89f9ce5c007def2f4ff3995364029dcb16"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_059.parquet",
+      "sha256": "404a4f93785da67a7d13473303eb3f677272a1424041ddd513d5d1a0ad374194"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_060.parquet",
+      "sha256": "620e0cc5b206598d8d9cf7ac76e06ce0156cabc90b968ece13b9e13e0bd4040e"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_061.parquet",
+      "sha256": "5160183da0188beed82c92135305a4bf4193e364ce69e632ee8523db4288adbe"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_062.parquet",
+      "sha256": "57de1d46303c2b07d395768e5f1fe27a470b9197a6d0d31f33d14fe7e861c1f1"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_063.parquet",
+      "sha256": "0f74286a607f9d698ecccfb69c30f4b2e5e678012c7dede18329273425877119"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_064.parquet",
+      "sha256": "9908f5613be5e9b05a15b3a1bf253e833119976c6401c37231fad51a8f06211f"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_065.parquet",
+      "sha256": "ec688f736e5a13f0188430321f1b6d233b0737c490773fe41d2a58b7da5e1c04"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_066.parquet",
+      "sha256": "357241ba70749934dccd935b7bf47cd3dc1bb9e4acf56d1ba49ef49131b0c612"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_067.parquet",
+      "sha256": "d77bec702bf90a465a52b4cecf7e0d13120af1861c745bd7ea74513b435c7ecf"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_068.parquet",
+      "sha256": "feb63598ed0845ec42dbca8c037ce640c365213079ad3ceff4e6a3b0bde52a36"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_069.parquet",
+      "sha256": "f1b8f150cca302e2bb4111ff1b7fa49adf48824ac52956c79319e4c482ff9c95"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_070.parquet",
+      "sha256": "5bca49c6afadd10cf0f035babf71d78023e726073f35c41f00f43be1fa494213"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_071.parquet",
+      "sha256": "e3c1d1b87afe82b91b457900254985c2723cf233606fec1124888ba971992ff7"
+    },
+    {
+      "source": "jnogga/droid_success",
+      "file": "data/chunk-000/file_072.parquet",
+      "sha256": "a9cb9122bdf982654775736b371d265b762763f6ce1166d279e4a53fd80262c7"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_000.parquet",
+      "sha256": "a755808db5d7b3019aa00a173420460430108cf9e74c62f27dd01fd28bc3b63f"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_001.parquet",
+      "sha256": "82b528f496d33ac6e7d3da99e29f1e17c1b5b54e5ed31661a08a35ee53bcf4d0"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_002.parquet",
+      "sha256": "d430ab17552d02b168bd407fc7dd2e23e978ae348c3358dc18c7b1847f7aa3ac"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_003.parquet",
+      "sha256": "1307265c67fb6cc6c0d7ad594e47a0a531ef993a108379bab1ff747568accf92"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_004.parquet",
+      "sha256": "276d1fef991f810ccf5659462041ffc739b010f3965120f76fed711df8aaafb3"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_005.parquet",
+      "sha256": "e6e357e547b7acca0d77de9e80c03a8ca0f63e2c24469e614b16a163fe5c4915"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_006.parquet",
+      "sha256": "68b6b6ee505f123938a684ca1261b150fe3c4fca12ae346cad61fc9da8415f9c"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_007.parquet",
+      "sha256": "e35b108169ace7932fdc4bc9ba3f855fa52f890400f3337ec49dbe28c1c226b9"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_008.parquet",
+      "sha256": "8b329c4e27a5eeb05ab624f8eb8341995bf3abb3483e3028206af56c13926c20"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_009.parquet",
+      "sha256": "204fd6d4f039005b4a68dca61d6ae9075d03784781397d802a91d2c1b6f83a7e"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_010.parquet",
+      "sha256": "bd06563b6b2daf1564091e421687ad13da0f75250667db6c2847a0f33e375f7b"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_011.parquet",
+      "sha256": "d44ea2868b070ac14c05b7242ed56dbe67d7021c080f81466e6362ca34b8ba93"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_012.parquet",
+      "sha256": "c81be92f97db28e548ea4b1bcd029ec8a528eedc21d9bd4ac9b9884964cc3d53"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_013.parquet",
+      "sha256": "2d2c0e8b888cbc46706bf1694908be2bd6ba33b934b545ec006e810444c468d5"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_014.parquet",
+      "sha256": "b68cb88e35d8276bba11de523179bcbdeed8ace13101ef982493d4a31f0883e0"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_015.parquet",
+      "sha256": "d2ec313f25e459e3d860b1541640603bd473102afd3139df2eaa2b15a5db40a8"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_016.parquet",
+      "sha256": "7079573302a9e852d3b93f3988be93bb15276673f2d6255839ee6ce1b05d51e9"
+    },
+    {
+      "source": "jnogga/droid_failure",
+      "file": "data/chunk-000/file_017.parquet",
+      "sha256": "2a65d7f9c21d3f1ebd63df83083fa99c7bc830001beec12542af3e48b06d3a3e"
+    }
+  ]
+}

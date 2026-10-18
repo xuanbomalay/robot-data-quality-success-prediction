@@ -1,0 +1,10 @@
+{
+  "episodes": 15000,
+  "review_flags": 1495,
+  "hard_rule_flags": 0,
+  "motion_outlier_flags": 0,
+  "isolation_flags": 1495,
+  "threshold_fit_split": "train",
+  "isolation_threshold": 0.47750445765807736,
+  "interpretation": "Review candidates, not verified corruption; failures are not quality labels."
+}

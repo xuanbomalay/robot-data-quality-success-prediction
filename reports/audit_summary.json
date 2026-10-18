@@ -1,0 +1,41 @@
+{
+  "audited_episodes": 15000,
+  "predictor_eligible_episodes": 15000,
+  "duplicate_content_or_prefix_episodes_excluded": 0,
+  "structural_errors": 0,
+  "rule_counts": {
+    "frame_count_mismatch": 0,
+    "nonmonotonic_timestamp": 0,
+    "timestamp_nonfinite": 0,
+    "frame_index_gap": 0
+  },
+  "timestamp_semantics": "15-Hz converted timestamps; original sensor-clock drift not measurable",
+  "split_counts": {
+    "train": 11674,
+    "validation": 1679,
+    "test": 1647
+  },
+  "split_classes": {
+    "test": {
+      "1": 1244,
+      "0": 403
+    },
+    "train": {
+      "1": 9444,
+      "0": 2230
+    },
+    "validation": {
+      "1": 1312,
+      "0": 367
+    }
+  },
+  "split_collectors": {
+    "test": 10,
+    "train": 53,
+    "validation": 17
+  },
+  "feature_count": 156,
+  "prefix_frames": 30,
+  "video_coverage": "separate sample; never all episodes",
+  "leakage_checks": "PASS"
+}

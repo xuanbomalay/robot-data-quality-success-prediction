@@ -1,0 +1,182 @@
+{
+  "protocol": {
+    "feature_count": 156,
+    "prefix_frames": 30,
+    "split": "collector-grouped 5/7 train, 1/7 validation, 1/7 test; actual fractions reported",
+    "threshold": "failure F1 selected using validation only",
+    "bootstrap": "1000 resamples of test collectors",
+    "label": "eventual teleoperated demonstration success; not autonomous policy reliability",
+    "preprocessing_fit": "train only",
+    "class_prevalence_success": {
+      "train": 0.8089772143224259,
+      "validation": 0.7814175104228708,
+      "test": 0.7553126897389193
+    }
+  },
+  "models": {
+    "constant_prior": {
+      "validation": {
+        "roc_auc_success": 0.5,
+        "pr_auc_success": 0.7814175104228708,
+        "pr_auc_failure": 0.21858248957712925,
+        "brier_score": 0.17156372210642454,
+        "failure_recall": 1.0,
+        "failure_precision": 0.21858248957712925,
+        "failure_threshold": 0.05,
+        "confusion_matrix_failure_positive": [
+          [
+            0,
+            1312
+          ],
+          [
+            0,
+            367
+          ]
+        ]
+      },
+      "test": {
+        "roc_auc_success": 0.5,
+        "pr_auc_success": 0.7553126897389193,
+        "pr_auc_failure": 0.24468731026108076,
+        "brier_score": 0.1876953116570521,
+        "failure_recall": 1.0,
+        "failure_precision": 0.24468731026108076,
+        "failure_threshold": 0.05,
+        "confusion_matrix_failure_positive": [
+          [
+            0,
+            1244
+          ],
+          [
+            0,
+            403
+          ]
+        ]
+      },
+      "test_ci95": {
+        "roc_auc_success": [
+          0.5,
+          0.5
+        ],
+        "pr_auc_failure": [
+          0.06869471914453693,
+          0.3942447832513262
+        ],
+        "failure_recall": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "logistic_regression": {
+      "validation": {
+        "roc_auc_success": 0.6742602345982589,
+        "pr_auc_success": 0.8755863507063748,
+        "pr_auc_failure": 0.34892423026018005,
+        "brier_score": 0.16047027503862654,
+        "failure_recall": 0.667574931880109,
+        "failure_precision": 0.3128991060025543,
+        "failure_threshold": 0.21999999999999997,
+        "confusion_matrix_failure_positive": [
+          [
+            774,
+            538
+          ],
+          [
+            122,
+            245
+          ]
+        ]
+      },
+      "test": {
+        "roc_auc_success": 0.6475848340022181,
+        "pr_auc_success": 0.8315100916629736,
+        "pr_auc_failure": 0.37630146208908216,
+        "brier_score": 0.17684682649532307,
+        "failure_recall": 0.533498759305211,
+        "failure_precision": 0.3536184210526316,
+        "failure_threshold": 0.21999999999999997,
+        "confusion_matrix_failure_positive": [
+          [
+            851,
+            393
+          ],
+          [
+            188,
+            215
+          ]
+        ]
+      },
+      "test_ci95": {
+        "roc_auc_success": [
+          0.5153715313098595,
+          0.7201192342445606
+        ],
+        "pr_auc_failure": [
+          0.08688494722319418,
+          0.4799455156230469
+        ],
+        "failure_recall": [
+          0.24986510791366906,
+          0.64492719559734
+        ]
+      }
+    },
+    "lightgbm": {
+      "validation": {
+        "roc_auc_success": 0.6523497208745931,
+        "pr_auc_success": 0.861266647921882,
+        "pr_auc_failure": 0.35639195143646574,
+        "brier_score": 0.16125631125266687,
+        "failure_recall": 0.7166212534059946,
+        "failure_precision": 0.28806133625410735,
+        "failure_threshold": 0.19,
+        "confusion_matrix_failure_positive": [
+          [
+            662,
+            650
+          ],
+          [
+            104,
+            263
+          ]
+        ]
+      },
+      "test": {
+        "roc_auc_success": 0.5922183303679,
+        "pr_auc_success": 0.8014981836913203,
+        "pr_auc_failure": 0.33295720386930283,
+        "brier_score": 0.1830511027988073,
+        "failure_recall": 0.5483870967741935,
+        "failure_precision": 0.30737134909596664,
+        "failure_threshold": 0.19,
+        "confusion_matrix_failure_positive": [
+          [
+            746,
+            498
+          ],
+          [
+            182,
+            221
+          ]
+        ]
+      },
+      "test_ci95": {
+        "roc_auc_success": [
+          0.47261869261141887,
+          0.664463766944018
+        ],
+        "pr_auc_failure": [
+          0.09110629158422506,
+          0.45239921741960276
+        ],
+        "failure_recall": [
+          0.3490258408531583,
+          0.7427549523110785
+        ]
+      }
+    }
+  },
+  "selected_model": "lightgbm",
+  "selection_metric": "validation PR-AUC for failure"
+}

@@ -1,0 +1,18 @@
+{
+  "metadata_rows": 67029,
+  "unique_uuid": 66993,
+  "duplicate_uuid_rows": 36,
+  "conflicting_uuid_count": 36,
+  "shorter_than_prefix": 573,
+  "blank_task_by_label": {
+    "0": 13747,
+    "1": 0
+  },
+  "selected_episodes": 15000,
+  "selected_classes": {
+    "1": 12000,
+    "0": 3000
+  },
+  "collector_groups": 80,
+  "sampling": "uniform within outcome stratum; source-derived outcomes; seed=42"
+}

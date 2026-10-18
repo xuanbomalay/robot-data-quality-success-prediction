@@ -1,0 +1,29 @@
+seed: 42
+prefix_frames: 30
+quota_gb: 30
+video_quota_gb: 8
+sample:
+  success: 12000
+  failure: 3000
+sources:
+  success:
+    repo: jnogga/droid_success
+    revision: 1fac60878954ad6f6e0652b9c11a50660660c220
+    label: 1
+  failure:
+    repo: jnogga/droid_failure
+    revision: 4231e59ca9b9fa89b873cfd41d55924a300383ca
+    label: 0
+policy:
+  repo: robomimic/robomimic_datasets
+  revision: 74fa018461f479cd9fd15b924a16103012096203
+  file: v1.5/lift/ph/low_dim_v15.hdf5
+  corruption_fraction: 0.1
+  train_seeds: [17, 29, 43]
+  eval_seeds_start: 10000
+  eval_episodes: 100
+  pilot_seeds_start: 9000
+  pilot_episodes: 20
+  steps: 30000
+  batch_size: 128
+  horizon: 400

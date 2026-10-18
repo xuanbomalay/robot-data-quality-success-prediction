@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robot-data-quality-success-prediction"
+version = "0.1.0"
+description = "Auditable robot demonstration quality checks and leakage-controlled success prediction"
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "pyarrow", "scipy", "scikit-learn", "lightgbm", "requests", "PyYAML", "matplotlib", "h5py"]
+
+[project.scripts]
+robot-audit = "robot_audit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q -p no:cacheprovider"

@@ -1,0 +1,10 @@
+{
+  "real_data_audit": "complete",
+  "prediction": "complete",
+  "sample_video": "complete",
+  "policy": "pending — no policy improvement claim",
+  "github_publication": "pending",
+  "selected_model": "lightgbm",
+  "test_roc_auc": 0.5922183303679,
+  "audited_episodes": 15000
+}

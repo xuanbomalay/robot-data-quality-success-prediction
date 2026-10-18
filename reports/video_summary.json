@@ -1,0 +1,13 @@
+{
+  "sample_episodes": 30,
+  "decoded_episodes": 30,
+  "sample_cameras": [
+    "observation.images.left_external"
+  ],
+  "download_bytes": 6123971692,
+  "video_quota_bytes": 8589934592,
+  "frame_count_mismatches": 0,
+  "decode_errors": 0,
+  "sampling": "outcome x anomaly flag stratified sample, limited by shard byte budget",
+  "scope": "Converted MP4 and converted timestamps only; not original sensor clocks; no whole-dataset video claim."
+}
