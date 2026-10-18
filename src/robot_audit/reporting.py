@@ -173,8 +173,13 @@ Do not use the old AUC 0.85 or 16% improvement unless this repository's measured
 这个项目中我负责的是数据管线、质量规则、特征设计、防泄漏评估和工程复现。它的价值是给出可检查的证据，而不是用一个漂亮的准确率代替完整实验。
 '''
     ws.path('reports/resume_evidence.md').write_text(resume, encoding='utf-8')
+    existing_status = _read(ws, 'project_status') or {}
+    colab_verification = _read(ws, 'colab_verification') or {}
+    qualitative = _read(ws, 'policy_qualitative')
     ws.json('reports/project_status.json', {'real_data_audit': 'complete', 'prediction': 'complete',
              'sample_video': 'complete' if video else 'pending', 'policy': policy_status,
-             'github_publication': 'pending', 'selected_model': model,
+             'colab_kernel_resume': colab_verification.get('status', 'pending'),
+             'qualitative_demo': 'complete' if qualitative else 'pending',
+             'github_publication': existing_status.get('github_publication', 'pending'), 'selected_model': model,
              'test_roc_auc': m['roc_auc_success'], 'audited_episodes': audit['audited_episodes']})
     print('REPORTS GENERATED — measured results only', flush=True)

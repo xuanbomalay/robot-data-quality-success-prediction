@@ -85,6 +85,24 @@ with overview:
                     f'(95% CI {interval[0]:+.1f} to {interval[1]:+.1f}).')
         st.caption(f"Simulated Lift only · {policy['rollouts']} rollouts · injected action corruptions · paired initial states verified")
         st.caption('Bars: mean over three training seeds; dots: individual seeds; intervals: paired two-way cluster bootstrap over training seeds and shared initial states.')
+        qualitative = read_json('policy_qualitative')
+        if qualitative:
+            st.markdown('**Prespecified qualitative rollouts**')
+            st.caption('Training seed 17, shared evaluation start 20000; excluded from the 1,500 formal evaluations. These examples were fixed before viewing their outcomes.')
+            for column, clip in zip(st.columns(2), qualitative['clips']):
+                path = ws.path(f'reports/figures/{clip["file"]}')
+                if path.exists():
+                    with column:
+                        st.markdown(clip['rollout']['condition'].replace('_', ' ').title())
+                        st.video(str(path))
+                        st.caption('Observed outcome: ' + ('success' if clip['rollout']['success'] else 'failure'))
+            showcase = qualitative.get('showcase')
+            if showcase:
+                path = ws.path(f'reports/figures/{showcase["file"]}')
+                if path.exists():
+                    st.markdown('**Clean-policy success illustration**')
+                    st.caption('Explicitly selected after formal evaluation: the first successful clean-policy seed-17 rollout above start 10000. This is an illustration, not a representative sample or an extra evaluation result.')
+                    st.video(str(path))
     else:
         st.info('Policy comparison is still pending. No downstream improvement is claimed.')
 

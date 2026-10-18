@@ -17,7 +17,11 @@ for path in notebooks:
     nbformat.validate(notebook)
     for index, cell in enumerate(notebook.cells):
         if cell.cell_type == 'code':
-            ast.parse(cell.source,filename=f'{path.name}:cell{index}')
+            tree = ast.parse(cell.source,filename=f'{path.name}:cell{index}')
+            for node in tree.body:
+                if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'render_code' for t in node.targets):
+                    assert isinstance(node.value, ast.Constant) and isinstance(node.value.value, str)
+                    ast.parse(node.value.value, filename=f'{path.name}:cell{index}:render_subprocess')
 for path in (root/'reports').glob('*.json'):
     json.loads(path.read_text(encoding='utf-8'), parse_constant=lambda x: (_ for _ in ()).throw(ValueError(x)))
 config=yaml.safe_load((root/'configs/project.yaml').read_text(encoding='utf-8'))

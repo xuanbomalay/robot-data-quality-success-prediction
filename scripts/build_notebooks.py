@@ -10,6 +10,15 @@ root=Path(__file__).resolve().parents[1]
 out=root/'notebooks';out.mkdir(exist_ok=True)
 
 def write_notebook(notebook, destination):
+    if destination.exists():
+        previous = nbf.read(destination, as_version=4)
+        for cell, old in zip(notebook.cells, previous.cells):
+            if cell.cell_type == old.cell_type == 'code' and cell.source == old.source:
+                cell.outputs = old.outputs
+                cell.execution_count = old.execution_count
+                cell.metadata.update(old.metadata)
+        if len(notebook.cells) == len(previous.cells) and all(c.source == p.source for c, p in zip(notebook.cells, previous.cells)):
+            notebook.metadata.update(previous.metadata)
     # Stable cell IDs keep rebuilds reviewable and make the exported artifact reproducible.
     for index, cell in enumerate(notebook.cells):
         cell.id=hashlib.sha256(f'{index}:{cell.cell_type}:{cell.source}'.encode()).hexdigest()[:12]
@@ -148,5 +157,56 @@ nb.cells=[nbf.v4.new_markdown_cell(f'''# Robot data quality: controlled Lift pol
 
 源码包由 `scripts/build_notebooks.py` 从仓库中的可读模块生成，SHA256 为 `{digest}`。Base64 仅用于在 GitHub 发布前让笔记本自包含，不包含数据、密钥或个人文件。'''),nbf.v4.new_code_cell(bootstrap),nbf.v4.new_code_cell(mount),nbf.v4.new_code_cell("policy_main(ws, config, 'prepare')\npolicy_main(ws, config, 'pilot')"),nbf.v4.new_code_cell("policy_main(ws, config, 'run')"),nbf.v4.new_code_cell("policy_main(ws, config, 'summarize')\nprint('COLAB SEQUENTIAL RUN ACCEPTANCE PASS')\nprint(ws.path('reports/policy_results.json').read_text())")]
 nb.cells[3].source="policy_main(ws, config, 'prepare')\npolicy_main(ws, config, 'smoke')\npolicy_main(ws, config, 'pilot')"
+
+render = """import ctypes.util, subprocess, sys, os
+if not ctypes.util.find_library('OSMesa'):
+    subprocess.run(['apt-get','-qq','update'],check=True)
+    subprocess.run(['apt-get','-qq','install','-y','libosmesa6'],check=True)
+render_code = r'''import os, sys, json, hashlib
+from pathlib import Path
+sys.path.insert(0,'/content/robot_audit_source/src')
+from robot_audit.paths import Workspace
+import robot_audit.policy as p
+import torch
+torch.set_num_threads(2)
+ws=Workspace('/content/drive/MyDrive/robot-data-quality-success-prediction'); ws.setup()
+prepared=p._load(ws)
+clips=[]
+for condition in ['contaminated','audit_drop']:
+    checkpoint=ws.path(f'artifacts/policy/{condition}_seed17.pt')
+    rows=p.evaluate(ws,prepared,checkpoint,20000,1,400,record_video=True)
+    path=ws.path(f'artifacts/policy/{condition}_seed17_20000.mp4')
+    assert path.is_file()
+    clips.append({'file':path.name,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'bytes':path.stat().st_size,'rollout':rows[0]})
+assert clips[0]['rollout']['initial_state_sha256']==clips[1]['rollout']['initial_state_sha256']
+formal=json.loads(ws.path('artifacts/policy/clean_seed17_steps60000_eval_10000.json').read_text())
+reference=min((r for r in formal if r['success'] and r['eval_seed']!=10000),key=lambda r:r['eval_seed'])
+showcase_dest=ws.path(f"artifacts/policy/clean_seed17_steps60000_eval_{reference['eval_seed']}.json")
+if showcase_dest.exists() and json.loads(showcase_dest.read_text())[0]!=reference:
+    diagnostic_dest=showcase_dest.with_name(showcase_dest.stem+'_initialization_check.json')
+    assert not diagnostic_dest.exists(), 'Preserve the earlier initialization diagnostic before retrying'
+    showcase_dest.rename(diagnostic_dest)
+original_factory=p._make_env
+p._make_env=lambda prepared, seed, record_video=False: original_factory(prepared,10000,record_video)
+showcase_rows=p.evaluate(ws,prepared,ws.path('artifacts/policy/clean_seed17.pt'),reference['eval_seed'],1,400,record_video=True)
+p._make_env=original_factory
+assert showcase_rows[0]==reference, 'Rendered clean example differs from the formal evaluation'
+showcase_path=ws.path(f"artifacts/policy/clean_seed17_{reference['eval_seed']}.mp4")
+showcase={'file':showcase_path.name,'sha256':hashlib.sha256(showcase_path.read_bytes()).hexdigest(),'bytes':showcase_path.stat().st_size,'rollout':showcase_rows[0],'environment_construction_seed':10000,'selection':'lowest successful clean-seed17 evaluation seed above 10000; explicitly selected after evaluation for illustration only'}
+print('CLEAN SHOWCASE PASS',json.dumps(showcase),flush=True)
+ws.json('reports/policy_qualitative.json',{'scope':'two prespecified paired rollouts plus one explicitly selected clean-policy success illustration; formal metrics unchanged','training_seed':17,'eval_seed':20000,'conditions':['contaminated','audit_drop'],'camera':'agentview','frames_per_second':10,'render_backend':'osmesa','clips':clips,'showcase':showcase})
+print('QUALITATIVE CLIPS PASS',json.dumps(clips),flush=True)
+'''
+render_result=subprocess.run([sys.executable,'-u','-c',render_code],env={**os.environ,'MUJOCO_GL':'osmesa','PYOPENGL_PLATFORM':'osmesa'},capture_output=True,text=True)
+print(render_result.stdout,flush=True)
+print(render_result.stderr[-5000:],flush=True)
+render_result.check_returncode()
+"""
+nb.cells.append(nbf.v4.new_markdown_cell('## Optional qualitative clips\nTwo prespecified paired rollouts: training seed 17, evaluation start 20000, contaminated and audit-filtered policies. The paired clips are excluded from formal evaluations and are not selected by outcome. One additional clean-policy success is explicitly selected after formal evaluation as an illustration. Set RENDER_CLIPS=True to render using cloud CPU software graphics; checkpoints remain on Drive.'))
+child_start = render.index("render_code = r'''")
+child_end = render.index("'''\nrender_result", child_start) + 4
+render_child = render[child_start:child_end]
+render_parent = render[:child_start] + render[child_end:]
+nb.cells.append(nbf.v4.new_code_cell("RENDER_CLIPS=False\n" + render_child + "\nif RENDER_CLIPS:\n" + '\n'.join('    '+line for line in render_parent.splitlines()) + "\nelse:\n    print('Qualitative rendering skipped; formal evaluation results unchanged')"))
 write_notebook(nb,out/'01_colab_policy.ipynb')
 print('NOTEBOOK BUILD PASS',digest)

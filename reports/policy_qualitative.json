@@ -1,0 +1,58 @@
+{
+  "scope": "two prespecified paired rollouts plus one explicitly selected clean-policy success illustration; formal metrics unchanged",
+  "training_seed": 17,
+  "eval_seed": 20000,
+  "conditions": [
+    "contaminated",
+    "audit_drop"
+  ],
+  "camera": "agentview",
+  "frames_per_second": 10,
+  "render_backend": "osmesa",
+  "clips": [
+    {
+      "file": "contaminated_seed17_20000.mp4",
+      "sha256": "a8b11f0015dc788a62d2703d5694188b974294e1ba2fd4c7be952923407b66c6",
+      "bytes": 145231,
+      "rollout": {
+        "condition": "contaminated",
+        "training_seed": 17,
+        "training_steps": 60000,
+        "eval_seed": 20000,
+        "success": false,
+        "steps": 400,
+        "initial_state_sha256": "67567b0588a6d2f49582a3ce5ebe632169cf97dbfa1ccc2f58762dc39e7c6477"
+      }
+    },
+    {
+      "file": "audit_drop_seed17_20000.mp4",
+      "sha256": "9682a154e2f8c3fc797c8ae567ebda5188e61ca24dfdab5738aead207fd57c28",
+      "bytes": 179412,
+      "rollout": {
+        "condition": "audit_drop",
+        "training_seed": 17,
+        "training_steps": 60000,
+        "eval_seed": 20000,
+        "success": false,
+        "steps": 400,
+        "initial_state_sha256": "67567b0588a6d2f49582a3ce5ebe632169cf97dbfa1ccc2f58762dc39e7c6477"
+      }
+    }
+  ],
+  "showcase": {
+    "file": "clean_seed17_10003.mp4",
+    "sha256": "6a36c5085b8fb783974ec019fd1e81e271c8cd2c34117a262affdadcf4336b95",
+    "bytes": 27793,
+    "rollout": {
+      "condition": "clean",
+      "training_seed": 17,
+      "training_steps": 60000,
+      "eval_seed": 10003,
+      "success": true,
+      "steps": 42,
+      "initial_state_sha256": "e2b7ef444594793d256c09821b59e7773d464ea6266f4069cfe2f7b7c2e5c99e"
+    },
+    "environment_construction_seed": 10000,
+    "selection": "lowest successful clean-seed17 evaluation seed above 10000; explicitly selected after evaluation for illustration only"
+  }
+}

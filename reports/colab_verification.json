@@ -1,0 +1,34 @@
+{
+  "core_execution_counts": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "verified_at_utc": "2026-10-18T14:03:00.9898285Z",
+  "core_code_cells_executed": 5,
+  "core_source_sha256": {
+    "cell_3": "f009c867f47a62190ff6a59a8cf2a7254a843ce8a8b16e506935fb7d189e47af",
+    "cell_5": "c7fb992f2c690de1a84ed5030622d498210483122cbf2bc435aa3bd7f413cd12",
+    "cell_4": "1d311d0eca92ac7569f58b2daa11f0670bd6755481320cbed8b2d8077684bcaf",
+    "cell_2": "99d3a6aea9b92f6149f1cdff451272e3721647701cf1e8ed2de93a88e348729a",
+    "cell_1": "2e45c47a3664b45eda534f9a6689ed50a7235aeefa91c11ea035542ba208a01f"
+  },
+  "status": "PASS",
+  "retraining_observed": false,
+  "notebook_sha256": "706444e13341a70dbe8a0cf9753c8d343c2f79736deb8cf3a95989c9c81c59cc",
+  "source_matches_repository": "PASS",
+  "formal_csv_sha256": "012ce1c4fbfd3f0fb59255fb1077c0ddff981f282f384cf5072d3be71c27f118",
+  "mode": "clean_kernel_sequential_resume",
+  "error_outputs": 0,
+  "scope": "Fresh Python kernel on existing fixed CPU VM; existing Drive checkpoints and saved 1500 evaluations resumed; not a fresh-VM full retraining experiment",
+  "sequential_output_acceptance": "PASS",
+  "final_code_cells_source_match": "PASS",
+  "final_code_cell_count": 6,
+  "final_notebook_error_outputs": 0,
+  "policy_notebook_outputs_saved": true,
+  "optional_render_default": false,
+  "saved_policy_notebook_sha256": "bb0030943858bc2de0991c83d6f3581a15603129de044dab79ace62a77fc2970",
+  "notebook_rebuild_preserves_outputs": "PASS"
+}

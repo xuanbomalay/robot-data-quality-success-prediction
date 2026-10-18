@@ -99,4 +99,23 @@ assert source['torch'] == '2.11.0+cpu' and source['device'] == 'cpu'
 for filename, digest in source['source_sha256'].items():
     normalized = (root / filename).read_text(encoding='utf-8').replace('\r\n', '\n').encode()
     assert hashlib.sha256(normalized).hexdigest() == digest, f'Cloud source mismatch: {filename}'
+colab = read('colab_verification.json')
+assert colab['status'] == 'PASS' and colab['mode'] == 'clean_kernel_sequential_resume'
+assert colab['core_execution_counts'] == [1, 2, 3, 4, 5] and colab['error_outputs'] == 0
+assert colab['formal_csv_sha256'] == receipt['csv_sha256']
+qualitative = read('policy_qualitative.json')
+assert len(qualitative['clips']) == 2
+assert {clip['rollout']['condition'] for clip in qualitative['clips']} == {'contaminated', 'audit_drop'}
+assert {clip['rollout']['eval_seed'] for clip in qualitative['clips']} == {20000}
+assert len({clip['rollout']['initial_state_sha256'] for clip in qualitative['clips']}) == 1
+showcase = qualitative.get('showcase')
+assert showcase and showcase['rollout']['success'] is True
+reference = frame[(frame.condition == 'clean') & (frame.training_seed == 17)
+                  & frame.success & frame.eval_seed.gt(10000)].sort_values('eval_seed').iloc[0].to_dict()
+assert showcase['rollout'] == reference
+for clip in qualitative['clips'] + [showcase]:
+    path = root / 'reports/figures' / clip['file']
+    assert path.parent == root / 'reports/figures'
+    assert path.stat().st_size == clip['bytes']
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == clip['sha256']
 print('POLICY ARTIFACT VERIFICATION PASS: 1,500 source-matched rows; budgets, paired starts, pilot, injection records, means and 2,000-resample intervals')

@@ -3,6 +3,8 @@
   "prediction": "complete",
   "sample_video": "complete",
   "policy": "complete",
+  "colab_kernel_resume": "PASS",
+  "qualitative_demo": "complete",
   "github_publication": "pending",
   "selected_model": "lightgbm",
   "test_roc_auc": 0.5922183303679,

@@ -14,6 +14,8 @@ build/
 *.hdf5
 *.h5
 *.mp4
+!reports/figures/*_seed17_20000.mp4
+!reports/figures/clean_seed17_10003.mp4
 *.parquet
 reports/internal/
 notebooks/.ipynb_checkpoints/

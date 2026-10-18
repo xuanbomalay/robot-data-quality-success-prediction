@@ -2,7 +2,7 @@
 
 A reproducible portfolio project for AI data and algorithm engineering: audit real robot demonstrations, predict eventual demonstration success from early motion, and test cleaning in a separate simulated policy experiment.
 
-**Status:** real-data audit, prediction and the controlled policy experiment are complete: **15,000 demonstrations**, **30 sampled videos**, and **1,500 simulated policy rollouts**. Fifteen research-control tests passed in an independent D-drive environment. Final presentation, clean-session Colab verification and GitHub publication are pending.
+**Status:** real-data audit, prediction and the controlled policy experiment are complete: **15,000 demonstrations**, **30 sampled videos**, and **1,500 simulated policy rollouts**. Research-control tests, independent result verification, and a clean-kernel Colab resume check passed. The local demo includes traceable simulation clips.
 
 | Model | Held-out ROC-AUC | Failure PR-AUC | Failure recall |
 |---|---:|---:|---:|
@@ -12,7 +12,7 @@ A reproducible portfolio project for AI data and algorithm engineering: audit re
 
 The validation-selected model is **lightgbm**. Its validation ranking did not carry over to held-out collectors; the simpler logistic regression achieved the higher test AUC. The original resume AUC of 0.85 is not supported by this experiment.
 
-![Measured held-out prediction curves](reports/figures/prediction.png)
+![Local evidence dashboard](reports/figures/demo_overview.jpg)
 
 An independent environment regenerated 156 prefix features and all three model predictions for one real held-out success and one failure episode. See [`reports/real_sample_verification.json`](reports/real_sample_verification.json). Full methods and uncertainty are in the research report.
 
@@ -33,6 +33,14 @@ Audit filtering improved success over contaminated data by **35.0 percentage poi
 ![Controlled policy comparison](reports/figures/policy.png)
 
 The 1,500-row CSV was compared against all 15 original per-policy cloud logs. Counts, state hashes, training budgets, source hashes, means and intervals can be checked locally with `python -B scripts/verify_policy_results.py`; this requires neither a simulator nor raw demonstration data. See [`policy_results.json`](reports/policy_results.json), [`policy_rollouts.csv`](reports/policy_rollouts.csv) and [`policy_cloud_verification.json`](reports/policy_cloud_verification.json).
+
+### Simulation clips and selection boundaries
+
+![Prespecified paired rollouts](reports/figures/policy_clips.jpg)
+
+The paired [contaminated](reports/figures/contaminated_seed17_20000.mp4) and [audit-filtered](reports/figures/audit_drop_seed17_20000.mp4) clips use training seed 17 and an additional shared start, 20000, fixed before viewing. **Both fail within the 400-step horizon**; they are retained and excluded from the formal metrics. A separate [clean-policy success illustration](reports/figures/clean_seed17_10003.mp4) was explicitly selected after evaluation as the first successful clean-seed17 start above 10000. It reproduces the original start-state hash and success at step 42. It is an illustration, not a representative sample.
+
+Exact replay preserves the original environment-construction seed (10000), as well as the reset seed (10003). The optional Colab cell documents this distinction, uses CPU software rendering, and checks the replay against the original evaluation record. Default sequential runs skip optional rendering. Clip hashes and selection rules are in [`policy_qualitative.json`](reports/policy_qualitative.json).
 
 ## Why this project
 
@@ -88,6 +96,8 @@ For a clean Linux/CI/cloud workspace, install `requirements.txt`, set `PYTHONPAT
 **Real data.** Target 12,000 successful and 3,000 failed demonstrations after UUID checks, excluding episodes shorter than 30 frames. Full/prefix motion duplicates are excluded conservatively. Split by collector (approximately 5/7 train, 1/7 validation, 1/7 test). All models use fixed-prefix motion features only. No source, text, IDs, total duration, reward or terminal state is a feature. Imputation/scaling fit on training data. Thresholds and presentation model are chosen on validation; test results remain held out. ROC-AUC, failure PR-AUC, failure recall, confusion matrices and collector-bootstrap intervals are reported.
 
 **Quality.** Rules detect structure and converted time inconsistencies. Motion outliers and Isolation Forest scores identify review candidates. Task failure is not a corruption label. MP4 checks apply only to the reported sample and converted timestamps, not original sensor-clock drift.
+
+**Cloud verification.** The final core notebook was restarted and run in order in a fresh Python kernel on the existing fixed CPU VM. Its five core cell sources matched the repository, execution counts restarted at 1, all acceptance checks passed, and existing checkpoints/evaluations resumed without training. This verifies clean-kernel resumption; it is not a second full retraining or a fresh-VM experiment. See [`colab_verification.json`](reports/colab_verification.json).
 
 **Policy.** The dedicated [Colab notebook](notebooks/01_colab_policy.ipynb) performs the simulated Lift experiment. It requires a free runtime and user-authorized Google Drive mounting for checkpoints. Use 180/20 released train/validation demonstration masks; inject finite action spikes/misalignment into 10% of training episodes only. Compare clean, contaminated, random-drop, audit-drop and oracle-drop at equal optimization budgets. A simulator smoke check verifies observations, actions and reproducible resets before the clean pilot. The pilot requires at least 70% on 20 independent starts before freezing one of 30k/60k/90k steps. The retained complete pilot records verify **14/20 at 60,000 steps**, the frozen formal budget. Three prespecified seeds, 100 matched evaluation starts per policy, 1,500 formal rollouts total. Initial-state hashes and training budgets must match. Report percentage-point differences and paired two-way cluster bootstrap intervals over training seeds and shared initial states. Failed/negative results are retained.
 
