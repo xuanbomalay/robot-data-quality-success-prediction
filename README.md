@@ -1,5 +1,7 @@
 # Robot Data Quality & Success Prediction
 
+[![Research controls](https://github.com/xuanbomalay/robot-data-quality-success-prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/xuanbomalay/robot-data-quality-success-prediction/actions/workflows/ci.yml)
+
 A reproducible portfolio project for AI data and algorithm engineering: audit real robot demonstrations, predict eventual demonstration success from early motion, and test cleaning in a separate simulated policy experiment.
 
 **Status:** real-data audit, prediction and the controlled policy experiment are complete: **15,000 demonstrations**, **30 sampled videos**, and **1,500 simulated policy rollouts**. Research-control tests, independent result verification, and a clean-kernel Colab resume check passed. The local demo includes traceable simulation clips.
