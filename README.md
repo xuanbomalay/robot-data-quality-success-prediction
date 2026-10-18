@@ -61,6 +61,8 @@ Use an existing Python 3.12 interpreter. The bootstrap script creates a dedicate
 
 All project-controlled caches, temporary files, environments and outputs are rooted under the project. The startup guard resolves paths and rejects escapes or Windows drives other than D:. Existing Windows/browser application logs are outside this project's write control.
 
+To execute the main notebook in saved-results inspection mode, use `.\.venv\Scripts\python.exe -B scripts/verify_notebook.py --save`. The verifier launches an isolated kernel on the local loopback interface, keeps Jupyter data and connection files under the project cache, executes all five code cells, and embeds the measured figures. It does not register a kernel in AppData or rerun the full experiment. The receipt is `reports/notebook_verification.json`.
+
 For a clean Linux/CI/cloud workspace, install `requirements.txt`, set `PYTHONPATH=src`, and use `python -m robot_audit --root /content/robot-audit COMMAND` (or a `/home/...` workspace). See the main notebook.
 
 ## Research protocol

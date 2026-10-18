@@ -7,7 +7,7 @@ import nbformat
 import yaml
 
 root=Path(__file__).resolve().parents[1]
-sources=list((root/'src').rglob('*.py'))+[root/'app.py']+list((root/'tests').glob('*.py'))
+sources=list((root/'src').rglob('*.py'))+[root/'app.py']+list((root/'tests').glob('*.py'))+list((root/'scripts').glob('*.py'))
 for path in sources:
     ast.parse(path.read_text(encoding='utf-8'),filename=str(path))
 notebooks=list((root/'notebooks').glob('*.ipynb'))

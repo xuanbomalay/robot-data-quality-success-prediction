@@ -49,10 +49,23 @@ print('Validation-selected model:',metrics['selected_model'])
     run('video','--episodes','30')
     run('report')
 from IPython.display import Image, Markdown, display
-display(Image(filename=str(ROOT/'reports/figures/prediction.png')))
-display(Markdown((ROOT/'reports/research_report.md').read_text(encoding='utf-8')))
+import re
+report=(ROOT/'reports/research_report.md').read_text(encoding='utf-8')
+display(Markdown(re.sub(r'!\\[[^\\]]*\\]\\(figures/[^)]+\\)','',report)))
+for name in ['audit','prediction']:
+    display(Image(filename=str(ROOT/f'reports/figures/{name}.png')))
 print('REAL-DATA REPORT INSPECTION PASS' if MODE=='inspect' else 'REAL-DATA SEQUENTIAL RUN PASS')
 '''),nbf.v4.new_markdown_cell('## 4. 策略实验\n用 `01_colab_policy.ipynb` 在 Colab 独立运行；达到五组 × 三种子 × 100 次评测并验证初始状态后，才生成 `policy_results.json`。免费配额不足时保留断点，不能将准备完成写成实验完成。')]
+main.cells.append(nbf.v4.new_code_cell('''policy_path=ROOT/'reports/policy_results.json'
+if policy_path.exists():
+    policy=json.loads(policy_path.read_text(encoding='utf-8'))
+    assert policy['status']=='complete' and policy['rollouts']==1500
+    display(pd.DataFrame(policy['conditions']).T)
+    display(Image(filename=str(ROOT/'reports/figures/policy.png')))
+    print('POLICY RESULT INSPECTION PASS')
+else:
+    print('POLICY EVALUATION PENDING: no improvement claim')
+'''))
 write_notebook(main,out/'00_project_runner.ipynb')
 
 buffer=io.BytesIO()
@@ -107,16 +120,16 @@ ws.path('reports/cloud_requirements.txt').write_text(subprocess.run([sys.executa
 print('CLOUD STORAGE PREFLIGHT PASS',cloud_root)
 '''
 nb=nbf.v4.new_notebook()
-nb.metadata={'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},'colab':{'name':'Robot_Data_Quality_Policy_Experiment.ipynb'},'accelerator':'GPU'}
+nb.metadata={'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},'colab':{'name':'Robot_Data_Quality_Policy_Experiment.ipynb'}}
 nb.cells=[nbf.v4.new_markdown_cell(f'''# Robot data quality: controlled Lift policy experiment
 
 五组 × 三个训练随机种子 × 100 次相同初始状态评测。先通过独立 pilot 再冻结步数。BC 使用本项目 PyTorch 实现，数据来自 robomimic，环境为 robosuite 1.5.1。此实验不代表真实 DROID 机器人性能。
 
-运行前在“代码执行程序 → 更改运行时类型”中选择 T4 GPU 和运行时版本 **2026.07**，以固定 Python 3.12。安装器拒绝在 Python 3.13 上编译旧版 NumPy。
+运行前在“代码执行程序 → 更改运行时类型”中选择 CPU 和运行时版本 **2026.07**，以固定 Python 3.12。本轮实测使用免费 CPU；复现同一实验请保持同一后端。安装器拒绝在 Python 3.13 上编译旧版 NumPy。
 
 首次安装如果更换了已载入的 NumPy，安装单元会明确要求“重启会话，然后全部运行”。依赖保留在当前云端虚拟机中，重启后顺序运行即可；不要在混合 ABI 的旧内核里继续执行。
 
-训练与安装仅在 Colab；断点保存到本账号云端硬盘项目目录。免费 GPU 不可用时可先检查 CPU 耗时，配额不足就停止并保留状态，不购买算力。
+训练与安装仅在 Colab；断点保存到本账号云端硬盘项目目录。免费 CPU 不可用时停止并保留状态，不购买算力。改用 GPU 时应另建实验目录并重新运行，避免在同一次对照中混合计算后端。
 
 源码包由 `scripts/build_notebooks.py` 从仓库中的可读模块生成，SHA256 为 `{digest}`。Base64 仅用于在 GitHub 发布前让笔记本自包含，不包含数据、密钥或个人文件。'''),nbf.v4.new_code_cell(bootstrap),nbf.v4.new_code_cell(mount),nbf.v4.new_code_cell("policy_main(ws, config, 'prepare')\npolicy_main(ws, config, 'pilot')"),nbf.v4.new_code_cell("policy_main(ws, config, 'run')"),nbf.v4.new_code_cell("policy_main(ws, config, 'summarize')\nprint('COLAB SEQUENTIAL RUN ACCEPTANCE PASS')\nprint(ws.path('reports/policy_results.json').read_text())")]
 nb.cells[3].source="policy_main(ws, config, 'prepare')\npolicy_main(ws, config, 'smoke')\npolicy_main(ws, config, 'pilot')"

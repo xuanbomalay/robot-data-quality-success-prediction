@@ -14,6 +14,7 @@ CACHE_ENV = {
     'HF_LEROBOT_HOME': 'lerobot', 'TORCH_HOME': 'torch', 'XDG_CACHE_HOME': 'xdg',
     'MPLCONFIGDIR': 'matplotlib', 'NUMBA_CACHE_DIR': 'numba', 'IPYTHONDIR': 'ipython',
     'JUPYTER_CONFIG_DIR': 'jupyter/config', 'JUPYTER_RUNTIME_DIR': 'jupyter/runtime',
+    'JUPYTER_DATA_DIR': 'jupyter/data',
     'PYTHONUSERBASE': 'python-user', 'PYTHONPYCACHEPREFIX': 'pycache',
 }
 
