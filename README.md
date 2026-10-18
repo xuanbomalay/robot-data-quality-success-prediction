@@ -41,7 +41,7 @@ flowchart LR
 
 ## Run on Windows, with project writes on D:
 
-Use an existing Python 3.12 interpreter. The bootstrap script creates a dedicated environment on D:. It does not install Python, CUDA, Docker, WSL, or a browser on C:.
+Use an existing Python 3.12 interpreter. The bootstrap script creates a dedicated environment on D: and installs the measured versions from `requirements-lock-windows.txt` when available. It does not install Python, CUDA, Docker, WSL, or a browser on C:.
 
 ```powershell
 # Run from the project directory on D:

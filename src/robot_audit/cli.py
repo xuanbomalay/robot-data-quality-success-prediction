@@ -42,9 +42,20 @@ def main():
     if args.command == 'preflight':
         result = ws.check_quota()
         result.update({'python': sys.version, 'executable': sys.executable, 'platform': platform.platform()})
-        ws.json('reports/internal/environment.json', result)
         freeze = subprocess.run([sys.executable, '-B', '-m', 'pip', 'freeze'], capture_output=True, text=True, check=True)
-        ws.path('requirements-lock-windows.txt').write_text(freeze.stdout, encoding='utf-8')
+        result['installed_packages'] = freeze.stdout.splitlines()
+        lock_path = ws.path('requirements-lock-windows.txt')
+        if os.name == 'nt' and lock_path.exists():
+            recorded = {line.strip().lower() for line in lock_path.read_text(encoding='utf-8').splitlines()
+                        if line.strip() and not line.lstrip().startswith('#')}
+            installed = {line.strip().lower() for line in freeze.stdout.splitlines() if line.strip()}
+            missing = sorted(recorded - installed)
+            result['windows_lock_check'] = {'status': 'MISMATCH' if missing else 'PASS',
+                                            'unmatched_entries': missing,
+                                            'additional_packages': sorted(installed - recorded)}
+        ws.json('reports/internal/environment.json', result)
+        if result.get('windows_lock_check', {}).get('status') == 'MISMATCH':
+            raise RuntimeError('Installed versions differ from the recorded Windows lock. Run bootstrap with Python 3.12; the lock file was preserved.')
         print(json.dumps(result, indent=2))
     elif args.command == 'fetch':
         from .data import fetch_metadata, select_episodes, fetch_controls
