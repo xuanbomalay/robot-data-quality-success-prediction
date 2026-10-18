@@ -106,16 +106,29 @@ importlib.reload(policy_module)
 print({{'python':sys.version,'torch':torch.__version__,'robosuite':robosuite.__version__,'mujoco':mujoco.__version__,'gpu':torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}})
 '''
 mount='''from google.colab import drive
-drive.mount('/content/drive',timeout_ms=300000)
-from robot_audit.paths import Workspace
+if not Path('/content/drive').is_mount():
+    drive.mount('/content/drive',timeout_ms=300000)
+assert Path('/content/drive').is_mount(), 'DriveFS disconnected; do not write checkpoints to temporary VM storage.'
+import robot_audit.paths as paths_module
+importlib.reload(paths_module)
+Workspace=paths_module.Workspace
 cloud_root=Path('/content/drive/MyDrive/robot-data-quality-success-prediction')
 cloud_root.mkdir(exist_ok=True)
 ws=Workspace(cloud_root);ws.setup()
 config=yaml.safe_load((source_root/'configs/project.yaml').read_text())
 from robot_audit.policy import policy_main
-ws.json('reports/cloud_source_manifest.json',{'bundle_sha256':hashlib.sha256(bundle).hexdigest(),
+manifest={'bundle_sha256':hashlib.sha256(bundle).hexdigest(),
     'source_sha256':{str(p.relative_to(source_root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in source_root.rglob('*.py')},
-    'python':sys.version,'torch':torch.__version__,'device':'cuda' if torch.cuda.is_available() else 'cpu'})
+    'python':sys.version,'torch':torch.__version__,'device':'cuda' if torch.cuda.is_available() else 'cpu'}
+manifest_path=ws.path('reports/cloud_source_manifest.json')
+if manifest_path.exists():
+    import json
+    previous=json.loads(manifest_path.read_text())
+    history=previous.get('previous_sources',[])
+    if (previous['bundle_sha256'],previous['source_sha256']) != (manifest['bundle_sha256'],manifest['source_sha256']):
+        history.append({key:value for key,value in previous.items() if key!='previous_sources'})
+    if history: manifest['previous_sources']=history
+ws.json('reports/cloud_source_manifest.json',manifest)
 ws.path('reports/cloud_requirements.txt').write_text(subprocess.run([sys.executable,'-m','pip','freeze'],capture_output=True,text=True,check=True).stdout)
 print('CLOUD STORAGE PREFLIGHT PASS',cloud_root)
 '''

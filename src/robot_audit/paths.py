@@ -30,6 +30,13 @@ def canonical(path: Path) -> Path:
     return resolved
 
 
+def require_cloud_mount(root: Path) -> None:
+    # A stale /content/drive directory can survive a failed DriveFS connection.
+    # Directory existence alone must never be accepted as durable checkpoint storage.
+    if root.as_posix().startswith('/content/drive/') and not Path('/content/drive').is_mount():
+        raise RuntimeError('Google Drive is not mounted; refusing to write checkpoints to temporary VM storage.')
+
+
 class Workspace:
     def __init__(self, root: str | Path | None = None, quota_gb: float = 30):
         self.root = canonical(Path(root or os.environ.get('ROBOT_AUDIT_ROOT', Path.cwd())))
@@ -37,9 +44,11 @@ class Workspace:
             raise ValueError('Windows project writes are restricted to D:.')
         if os.name != 'nt' and not str(self.root).startswith(('/content/', '/tmp/', '/home/', '/workspace/', '/mnt/')):
             raise ValueError('Use an explicit cloud/CI workspace, not a system directory.')
+        require_cloud_mount(self.root)
         self.quota_bytes = int(quota_gb * 1024**3)
 
     def path(self, relative: str | Path) -> Path:
+        require_cloud_mount(self.root)
         path = canonical(self.root / relative)
         if not path.is_relative_to(self.root):
             raise ValueError(f'Path escapes project root: {relative}; resolved={path!s}; root={self.root!s}')

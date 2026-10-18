@@ -97,6 +97,18 @@ def test_path_traversal_and_outside_drive_rejected(tmp_path):
         ws.path('../outside.txt')
 
 
+def test_drive_directory_without_mount_cannot_hold_checkpoints(monkeypatch):
+    from pathlib import PurePosixPath
+    from robot_audit.paths import require_cloud_mount
+
+    cloud_root = PurePosixPath('/content/drive/MyDrive/robot-data-quality-success-prediction')
+    monkeypatch.setattr(Path, 'is_mount', lambda self: False)
+    with pytest.raises(RuntimeError, match='not mounted'):
+        require_cloud_mount(cloud_root)
+    monkeypatch.setattr(Path, 'is_mount', lambda self: True)
+    require_cloud_mount(cloud_root)
+
+
 def test_policy_filter_has_equal_retention_and_preserves_inputs():
     rng = np.random.default_rng(4)
     actions = {f'demo_{i}': rng.uniform(-.5, .5, (80, 7)).astype(np.float32) for i in range(100)}

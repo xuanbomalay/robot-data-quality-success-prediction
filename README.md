@@ -2,7 +2,7 @@
 
 A reproducible portfolio project for AI data and algorithm engineering: audit real robot demonstrations, predict eventual demonstration success from early motion, and test cleaning in a separate simulated policy experiment.
 
-**Status:** real-data audit and prediction complete: **15,000 demonstrations**, **30 sampled videos**, and 13 research-control tests passed in an independent D-drive environment. The five policy datasets have been prepared and checked; the formal policy comparison is running, and no policy improvement is claimed.
+**Status:** real-data audit and prediction complete: **15,000 demonstrations**, **30 sampled videos**, and 14 research-control tests passed in an independent D-drive environment. The five policy datasets have been prepared and checked; the formal policy comparison is running, and no policy improvement is claimed.
 
 | Model | Held-out ROC-AUC | Failure PR-AUC | Failure recall |
 |---|---:|---:|---:|
@@ -59,7 +59,7 @@ Use an existing Python 3.12 interpreter. The bootstrap script creates a dedicate
 
 `fetch --small` selects a clearly smaller cohort for a network smoke test; do not mix its results with the full experiment. Public downloads do not require a Hugging Face token. Downloading selected episodes can require entire shared Parquet shards (~7.2 GB controls across both sources); videos have a separate 8 GiB cap. Total project storage is capped at 30 GiB. Partial downloads and episode audit checkpoints can resume. Changing audit/feature code invalidates audit checkpoints.
 
-All project-controlled caches, temporary files, environments and outputs are rooted under the project. The startup guard resolves paths and rejects escapes or Windows drives other than D:. Existing Windows/browser application logs are outside this project's write control.
+All project-controlled caches, temporary files, environments and outputs are rooted under the project. The startup guard resolves paths and rejects escapes or Windows drives other than D:. Cloud checkpoint paths require a real DriveFS mount on every workspace access; an ordinary directory left after a disconnection is rejected. Existing Windows/browser application logs are outside this project's write control.
 
 To execute the main notebook in saved-results inspection mode, use `.\.venv\Scripts\python.exe -B scripts/verify_notebook.py --save`. The verifier launches an isolated kernel on the local loopback interface, keeps Jupyter data and connection files under the project cache, executes all five code cells, and embeds the measured figures. It does not register a kernel in AppData or rerun the full experiment. The receipt is `reports/notebook_verification.json`.
 
@@ -71,7 +71,7 @@ For a clean Linux/CI/cloud workspace, install `requirements.txt`, set `PYTHONPAT
 
 **Quality.** Rules detect structure and converted time inconsistencies. Motion outliers and Isolation Forest scores identify review candidates. Task failure is not a corruption label. MP4 checks apply only to the reported sample and converted timestamps, not original sensor-clock drift.
 
-**Policy.** The dedicated [Colab notebook](notebooks/01_colab_policy.ipynb) performs the simulated Lift experiment. It requires a free runtime and user-authorized Google Drive mounting for checkpoints. Use 180/20 released train/validation demonstration masks; inject finite action spikes/misalignment into 10% of training episodes only. Compare clean, contaminated, random-drop, audit-drop and oracle-drop at equal optimization budgets. A simulator smoke check verifies observations, actions and reproducible resets before the clean pilot. The pilot requires at least 70% on 20 independent starts before freezing one of 30k/60k/90k steps: the measured 30k pilot achieved 40%, and 60k achieved 70%, freezing **60,000 steps**. Three prespecified seeds, 100 matched evaluation starts per policy, 1,500 formal rollouts total. Initial-state hashes and training budgets must match. Report percentage-point differences and paired two-way cluster bootstrap intervals over training seeds and shared initial states. Failed/negative results are retained.
+**Policy.** The dedicated [Colab notebook](notebooks/01_colab_policy.ipynb) performs the simulated Lift experiment. It requires a free runtime and user-authorized Google Drive mounting for checkpoints. Use 180/20 released train/validation demonstration masks; inject finite action spikes/misalignment into 10% of training episodes only. Compare clean, contaminated, random-drop, audit-drop and oracle-drop at equal optimization budgets. A simulator smoke check verifies observations, actions and reproducible resets before the clean pilot. The pilot requires at least 70% on 20 independent starts before freezing one of 30k/60k/90k steps. The retained complete pilot records verify **14/20 at 60,000 steps**, the frozen formal budget. Three prespecified seeds, 100 matched evaluation starts per policy, 1,500 formal rollouts total. Initial-state hashes and training budgets must match. Report percentage-point differences and paired two-way cluster bootstrap intervals over training seeds and shared initial states. Failed/negative results are retained.
 
 ## Inspect the evidence
 
